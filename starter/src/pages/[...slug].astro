@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageSections from '../components/PageSections.astro';
 import { getCollection, render } from 'astro:content';
 
-const reservedSlugs = new Set(['home', 'about', 'contact', 'blog', 'services', 'admin', '404']);
+const reservedSlugs = new Set(['about', 'contact', 'blog', 'services', 'admin', '404']);
 
 export async function getStaticPaths() {
   const pages = await getCollection('pages', ({ data, id }) => !data.draft && !reservedSlugs.has(id));
