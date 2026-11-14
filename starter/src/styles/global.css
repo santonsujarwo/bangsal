@@ -11,7 +11,7 @@
 * { box-sizing: border-box; }
 body { margin: 0; line-height: 1.6; }
 a { color: inherit; }
-a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, summary:focus-visible {
   outline: 3px solid #2563eb;
   outline-offset: 3px;
 }
@@ -32,6 +32,13 @@ main { width: min(100% - 2rem, 72rem); margin-inline: auto; }
 .eyebrow { text-transform: uppercase; letter-spacing: .12em; font-size: .8rem; font-weight: 700; }
 .image-text { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: center; gap: 2rem; }
 .image-text img { width: 100%; height: auto; border-radius: 1rem; }
+.feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); gap: 1rem; margin-top: 2rem; }
+.feature-card { padding: 1.5rem; border: 1px solid #e5e7eb; border-radius: 1rem; }
+.feature-card h3 { margin-top: 0; }
+.faq-list { display: grid; gap: .75rem; margin-top: 1.5rem; }
+.faq-list details { padding: 1rem 1.25rem; border: 1px solid #e5e7eb; border-radius: .75rem; }
+.faq-list summary { cursor: pointer; font-weight: 650; }
+.faq-list details p { margin-bottom: 0; }
 .button { display: inline-flex; padding: .8rem 1.2rem; border-radius: 999px; background: #17202a; color: white; text-decoration: none; }
 .cta-inner { padding: 2rem; border-radius: 1.25rem; background: #f3f4f6; }
 .page-body { padding-block: 2rem; }
