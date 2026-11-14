@@ -1,0 +1,77 @@
+---
+interface SectionItem {
+  title: string;
+  body?: string;
+}
+interface Section {
+  type: 'hero' | 'rich_text' | 'image_text' | 'feature_grid' | 'cta' | 'faq';
+  eyebrow?: string;
+  heading?: string;
+  body?: string;
+  image?: string;
+  image_alt?: string;
+  button_label?: string;
+  button_url?: string;
+  items?: SectionItem[];
+}
+interface Props { sections?: Section[] }
+const { sections = [] } = Astro.props;
+---
+{sections.map((section) => (
+  <section class:list={['content-section', `section-${section.type}`]}>
+    {section.type === 'hero' && (
+      <div class="section-inner">
+        {section.eyebrow && <p class="eyebrow">{section.eyebrow}</p>}
+        {section.heading && <h1>{section.heading}</h1>}
+        {section.body && <p>{section.body}</p>}
+        {section.button_label && section.button_url && <a class="button" href={section.button_url}>{section.button_label}</a>}
+      </div>
+    )}
+    {section.type === 'rich_text' && (
+      <div class="section-inner prose">
+        {section.heading && <h2>{section.heading}</h2>}
+        {section.body && <p>{section.body}</p>}
+      </div>
+    )}
+    {section.type === 'image_text' && (
+      <div class="section-inner image-text">
+        {section.image && <img src={section.image} alt={section.image_alt ?? ''} loading="lazy" />}
+        <div>
+          {section.eyebrow && <p class="eyebrow">{section.eyebrow}</p>}
+          {section.heading && <h2>{section.heading}</h2>}
+          {section.body && <p>{section.body}</p>}
+          {section.button_label && section.button_url && <a class="button" href={section.button_url}>{section.button_label}</a>}
+        </div>
+      </div>
+    )}
+    {section.type === 'feature_grid' && (
+      <div class="section-inner">
+        {section.heading && <h2>{section.heading}</h2>}
+        {section.body && <p>{section.body}</p>}
+        {section.items?.length ? (
+          <div class="feature-grid">
+            {section.items.map((item) => <article class="feature-card"><h3>{item.title}</h3>{item.body && <p>{item.body}</p>}</article>)}
+          </div>
+        ) : null}
+      </div>
+    )}
+    {section.type === 'cta' && (
+      <div class="section-inner cta-inner">
+        {section.heading && <h2>{section.heading}</h2>}
+        {section.body && <p>{section.body}</p>}
+        {section.button_label && section.button_url && <a class="button" href={section.button_url}>{section.button_label}</a>}
+      </div>
+    )}
+    {section.type === 'faq' && (
+      <div class="section-inner">
+        {section.heading && <h2>{section.heading}</h2>}
+        {section.body && <p>{section.body}</p>}
+        {section.items?.length ? (
+          <div class="faq-list">
+            {section.items.map((item) => <details><summary>{item.title}</summary>{item.body && <p>{item.body}</p>}</details>)}
+          </div>
+        ) : null}
+      </div>
+    )}
+  </section>
+))}

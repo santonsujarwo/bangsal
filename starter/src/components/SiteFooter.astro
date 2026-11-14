@@ -1,0 +1,15 @@
+---
+import site from '../data/site.json';
+---
+<footer class="site-footer">
+  <div>
+    <strong>{site.site_name}</strong>
+    {site.tagline && <p>{site.tagline}</p>}
+  </div>
+  <div class="site-footer-contact">
+    {site.phone && <a href={`tel:${site.phone.replace(/[^+\d]/g, '')}`}>{site.phone}</a>}
+    {site.email && <a href={`mailto:${site.email}`}>{site.email}</a>}
+    {site.address && <span>{site.address}</span>}
+  </div>
+  <small>{site.footer_note.replace('{year}', String(new Date().getFullYear())).replace('Company Name', site.site_name)}</small>
+</footer>

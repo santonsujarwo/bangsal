@@ -1,17 +1,35 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
+import site from '../../data/site.json';
+import { getCollection, render } from 'astro:content';
+
 export async function getStaticPaths() {
   const services = await getCollection('services', ({ data }) => !data.draft);
   return services.map((service) => ({
-    params: { slug: service.id.replace(/\.md$/, '') },
+    params: { slug: service.id },
     props: { service },
   }));
 }
+
 const { service } = Astro.props;
-const { Content } = await service.render();
+const { Content } = await render(service);
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: service.data.title,
+  description: service.data.description,
+  ...(service.data.featured_image ? { image: new URL(service.data.featured_image, Astro.site ?? 'https://example.com').href } : {}),
+  provider: { '@type': 'Organization', name: site.site_name },
+};
 ---
-<BaseLayout title={service.data.seo_title ?? service.data.title} description={service.data.seo_description ?? service.data.description}>
+<BaseLayout
+  title={service.data.seo_title ?? service.data.title}
+  description={service.data.seo_description ?? service.data.description}
+  canonicalUrl={service.data.canonical_url}
+  ogImage={service.data.og_image ?? service.data.featured_image}
+  noindex={service.data.noindex}
+  structuredData={serviceSchema}
+>
   <main>
     <a href="/services/">Services</a>
     <h1>{service.data.title}</h1>
