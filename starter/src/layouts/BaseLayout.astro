@@ -26,6 +26,7 @@ const siteUrl = Astro.site ?? new URL('https://example.com');
 const canonical = canonicalUrl ? new URL(canonicalUrl, siteUrl) : new URL(Astro.url.pathname, siteUrl);
 const resolvedImage = ogImage || site.default_og_image;
 const imageUrl = resolvedImage ? new URL(resolvedImage, siteUrl).href : undefined;
+const indexingEnabled = import.meta.env.PUBLIC_SITE_INDEXING === 'true';
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
@@ -47,7 +48,7 @@ const jsonLd = JSON.stringify([organizationSchema, ...extraSchemas]).replace(/</
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
     <link rel="canonical" href={canonical.href} />
-    {noindex && <meta name="robots" content="noindex,nofollow" />}
+    {(noindex || !indexingEnabled) && <meta name="robots" content="noindex,nofollow" />}
     <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content={site.site_name} />
     <meta property="og:title" content={title} />
