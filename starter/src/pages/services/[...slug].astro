@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import site from '../../data/site.json';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -18,7 +19,7 @@ const serviceSchema = {
   name: service.data.title,
   description: service.data.description,
   ...(service.data.featured_image ? { image: new URL(service.data.featured_image, Astro.site ?? 'https://example.com').href } : {}),
-  provider: { '@type': 'Organization', name: 'Company Name' },
+  provider: { '@type': 'Organization', name: site.site_name },
 };
 ---
 <BaseLayout
