@@ -38,6 +38,9 @@ const articleSchema = {
     <a href="/blog/">Blog</a>
     <h1>{post.data.title}</h1>
     {post.data.published_at && <time datetime={post.data.published_at.toISOString()}>{post.data.published_at.toLocaleDateString()}</time>}
+    {post.data.featured_image && (
+      <img class="content-featured-image" src={post.data.featured_image} alt={post.data.featured_image_alt ?? ''} loading="eager" decoding="async" />
+    )}
     <Content />
   </article>
 </BaseLayout>
