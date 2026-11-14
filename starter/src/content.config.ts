@@ -2,6 +2,11 @@ import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
+const sectionItem = z.object({
+  title: z.string(),
+  body: z.string().optional(),
+});
+
 const pageSection = z.object({
   type: z.enum(['hero', 'rich_text', 'image_text', 'feature_grid', 'cta', 'faq']),
   eyebrow: z.string().optional(),
@@ -11,6 +16,7 @@ const pageSection = z.object({
   image_alt: z.string().optional(),
   button_label: z.string().optional(),
   button_url: z.string().optional(),
+  items: z.array(sectionItem).default([]),
 });
 
 const sharedSeoFields = {
