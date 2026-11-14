@@ -19,12 +19,12 @@ assert.match(portfolioHtml, /<img[^>]+src=["']\/uploads\/Screenshot_291\.png["']
 
 for (const route of ['about', 'contact', 'blog', 'services']) {
   assert.ok(
-    exists(`${route}/index.html`) || exists(`${route}.html`),
-    `Expected static route / ${route} / to be generated.`,
+    exists(\`\${route}/index.html\`) || exists(\`\${route}.html\`),
+    \`Expected static route /\${route}/ to be generated.\`,
   );
 }
 
-const footerHtml = portfolioHtml.match(/<footer[\\s\\S]*?<\\/footer>/i)?.[0] ?? '';
+const footerHtml = portfolioHtml.match(/<footer[\s\S]*?<\/footer>/i)?.[0] ?? '';
 assert.match(footerHtml, /https:\/\/facebook\.com/i, 'Social profile URLs should be normalized and visible in the footer.');
 
 assert.ok(exists('robots.txt'), 'robots.txt must be generated.');
