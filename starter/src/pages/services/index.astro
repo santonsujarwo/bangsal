@@ -1,13 +1,15 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+
 const services = await getCollection('services', ({ data }) => !data.draft);
+const sortedServices = services.sort((a, b) => a.data.sort_order - b.data.sort_order);
 ---
 <BaseLayout title="Services" description="Explore our services.">
   <main>
     <h1>Services</h1>
     <ul>
-      {services.map((service) => <li><a href={`/services/${service.id.replace(/\.md$/, '')}/`}>{service.data.title}</a></li>)}
+      {sortedServices.map((service) => <li><a href={`/services/${service.id}/`}>{service.data.title}</a></li>)}
     </ul>
   </main>
 </BaseLayout>
