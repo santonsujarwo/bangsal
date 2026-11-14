@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Company Name" description="A short, verified description of the company.">
+  <header>
+    <a href="/" aria-label="Company Name home">Company Name</a>
+    <nav aria-label="Main navigation">
+      <a href="/about/">About</a>
+      <a href="/services/">Services</a>
+      <a href="/contact/">Contact</a>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <p>Company profile starter</p>
+      <h1>Make your value proposition clear.</h1>
+      <p>Replace this copy with approved business messaging.</p>
+      <a href="/contact/">Contact us</a>
+    </section>
+  </main>
+  <footer><small>© {new Date().getFullYear()} Company Name</small></footer>
+</BaseLayout>
