@@ -2,12 +2,12 @@
   "site_name": "Starter astro builder",
   "tagline": "A short, clear statement about the company.",
   "default_description": "A verified description of the company and the services it provides.",
-  "default_og_image": "",
+  "default_og_image": "/uploads/ngen-logo.png",
   "language": "en",
-  "phone": "",
-  "email": "",
-  "address": "",
-  "logo": "",
+  "phone": "12345678",
+  "email": "tes@helo.com",
+  "address": "Indonesia",
+  "logo": "/uploads/ngen-logo.png",
   "social_links": [
     {
       "label": "facebook",
