@@ -8,6 +8,11 @@
   "email": "",
   "address": "",
   "logo": "",
-  "social_links": [],
+  "social_links": [
+    {
+      "label": "facebook",
+      "url": "facebook.com"
+    }
+  ],
   "footer_note": "© {year} Company Name. All rights reserved."
 }
