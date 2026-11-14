@@ -21,5 +21,8 @@
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.17",
     "tailwindcss": "^4.1.17"
+  },
+  "overrides": {
+    "vite": "^7.3.2"
   }
 }
