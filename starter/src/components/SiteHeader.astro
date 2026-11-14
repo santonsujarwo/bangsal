@@ -1,13 +1,16 @@
 ---
 import site from '../data/site.json';
 import navigation from '../data/navigation.json';
+
+type NavigationItem = { label: string; url: string; external?: boolean };
+const navItems = navigation.items as NavigationItem[];
 ---
 <header class="site-header">
   <a class="site-brand" href="/" aria-label={`${site.site_name} home`}>
     {site.logo ? <img src={site.logo} alt={site.site_name} /> : <span>{site.site_name}</span>}
   </a>
   <nav aria-label="Main navigation">
-    {navigation.items.map((item) => (
+    {navItems.map((item) => (
       <a href={item.url} target={item.external ? '_blank' : undefined} rel={item.external ? 'noopener noreferrer' : undefined}>
         {item.label}
       </a>
