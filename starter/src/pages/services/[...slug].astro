@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+export async function getStaticPaths() {
+  const services = await getCollection('services', ({ data }) => !data.draft);
+  return services.map((service) => ({
+    params: { slug: service.id.replace(/\.md$/, '') },
+    props: { service },
+  }));
+}
+const { service } = Astro.props;
+const { Content } = await service.render();
+---
+<BaseLayout title={service.data.seo_title ?? service.data.title} description={service.data.seo_description ?? service.data.description}>
+  <main>
+    <a href="/services/">Services</a>
+    <h1>{service.data.title}</h1>
+    <p>{service.data.description}</p>
+    <Content />
+  </main>
+</BaseLayout>
