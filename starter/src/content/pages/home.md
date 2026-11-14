@@ -2,6 +2,7 @@
 title: Company Name
 description: A clear introduction to the company and its value.
 template: default
+canonical_url: /
 sections:
   - type: hero
     eyebrow: Company profile
