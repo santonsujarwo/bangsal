@@ -23,11 +23,19 @@ collections:
           - { label: Site Name, name: site_name, widget: string }
           - { label: Tagline, name: tagline, widget: string, required: false }
           - { label: Default Description, name: default_description, widget: text, required: false }
+          - { label: Default Open Graph Image, name: default_og_image, widget: image, required: false }
           - { label: Language, name: language, widget: string, default: en }
           - { label: Phone, name: phone, widget: string, required: false }
           - { label: Email, name: email, widget: string, required: false }
           - { label: Address, name: address, widget: text, required: false }
           - { label: Logo, name: logo, widget: image, required: false }
+          - label: Social Links
+            name: social_links
+            widget: list
+            required: false
+            fields:
+              - { label: Platform, name: label, widget: string }
+              - { label: URL, name: url, widget: string }
           - { label: Footer Note, name: footer_note, widget: string, required: false }
       - name: navigation
         label: Main Navigation
