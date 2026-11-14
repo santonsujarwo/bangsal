@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PageSections from '../components/PageSections.astro';
 import { getEntry, render } from 'astro:content';
 
 const entry = await getEntry('pages', 'about');
@@ -13,5 +14,8 @@ const { Content } = await render(entry);
   ogImage={entry.data.og_image}
   noindex={entry.data.noindex}
 >
-  <main><a href="/">Home</a><h1>{entry.data.title}</h1><Content /></main>
+  <main>
+    <PageSections sections={entry.data.sections} />
+    <article class="page-body"><Content /></article>
+  </main>
 </BaseLayout>
