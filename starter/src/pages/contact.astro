@@ -1,6 +1,20 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PageSections from '../components/PageSections.astro';
+import { getEntry, render } from 'astro:content';
+
+const entry = await getEntry('pages', 'contact');
+const Content = entry ? (await render(entry)).Content : null;
 ---
-<BaseLayout title="Contact" description="Contact our team.">
-  <main><h1>Contact</h1><p>Replace with verified contact details and a tested contact method.</p></main>
+<BaseLayout
+  title={entry?.data.seo_title ?? entry?.data.title ?? 'Contact'}
+  description={entry?.data.seo_description ?? entry?.data.description ?? 'Contact our team.'}
+  canonicalUrl={entry?.data.canonical_url}
+  ogImage={entry?.data.og_image}
+  noindex={entry?.data.noindex}
+>
+  <main>
+    {entry ? <PageSections sections={entry.data.sections} /> : <h1>Contact</h1>}
+    {Content && <article class="page-body"><Content /></article>}
+  </main>
 </BaseLayout>
