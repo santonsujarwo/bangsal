@@ -1,4 +1,8 @@
 ---
+interface SectionItem {
+  title: string;
+  body?: string;
+}
 interface Section {
   type: 'hero' | 'rich_text' | 'image_text' | 'feature_grid' | 'cta' | 'faq';
   eyebrow?: string;
@@ -8,6 +12,7 @@ interface Section {
   image_alt?: string;
   button_label?: string;
   button_url?: string;
+  items?: SectionItem[];
 }
 interface Props { sections?: Section[] }
 const { sections = [] } = Astro.props;
@@ -43,6 +48,11 @@ const { sections = [] } = Astro.props;
       <div class="section-inner">
         {section.heading && <h2>{section.heading}</h2>}
         {section.body && <p>{section.body}</p>}
+        {section.items?.length ? (
+          <div class="feature-grid">
+            {section.items.map((item) => <article class="feature-card"><h3>{item.title}</h3>{item.body && <p>{item.body}</p>}</article>)}
+          </div>
+        ) : null}
       </div>
     )}
     {section.type === 'cta' && (
@@ -56,6 +66,11 @@ const { sections = [] } = Astro.props;
       <div class="section-inner">
         {section.heading && <h2>{section.heading}</h2>}
         {section.body && <p>{section.body}</p>}
+        {section.items?.length ? (
+          <div class="faq-list">
+            {section.items.map((item) => <details><summary>{item.title}</summary>{item.body && <p>{item.body}</p>}</details>)}
+          </div>
+        ) : null}
       </div>
     )}
   </section>
