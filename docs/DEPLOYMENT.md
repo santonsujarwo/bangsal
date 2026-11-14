@@ -40,4 +40,4 @@ For a GitHub App, install it only on this repository and keep its private key an
 
 ## Runtime and lockfile
 
-The starter requires Node.js `22.22.1` or newer. The starter currently has no committed `package-lock.json`; CI uses `npm install` for now. After a successful install, commit the generated `starter/package-lock.json` and change CI to `npm ci` so dependency resolution becomes reproducible.
+The starter requires Node.js `22.22.1` or newer. Its npm overrides constrain Vite to the 7.x line used by Astro 6, preventing npm from hoisting an incompatible Vite 8 peer dependency for the Tailwind plugin. The starter currently has no committed `package-lock.json`; CI uses `npm install` for now. After a successful install, commit the generated `starter/package-lock.json` and change CI to `npm ci` so dependency resolution becomes reproducible.
