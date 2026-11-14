@@ -6,6 +6,7 @@ const posts = await getCollection('posts', ({ data }) => !data.draft);
 const sortedPosts = posts.sort((a, b) => {
   const dateA = a.data.published_at?.getTime() ?? 0;
   const dateB = b.data.published_at?.getTime() ?? 0;
+  return dateB - dateA;
 });
 ---
 <BaseLayout title="Blog" description="News and insights.">
