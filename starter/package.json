@@ -1,8 +1,11 @@
 {
   "name": "astro-sveltia-company-starter",
   "type": "module",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "dev": "astro dev",
     "build": "astro check && astro build",
@@ -10,13 +13,13 @@
     "check": "astro check"
   },
   "dependencies": {
-    "@astrojs/check": "latest",
-    "@astrojs/sitemap": "latest",
-    "astro": "latest",
-    "typescript": "latest"
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/sitemap": "^3.6.0",
+    "astro": "^6.0.0",
+    "typescript": "^5.9.3"
   },
   "devDependencies": {
-    "@tailwindcss/vite": "latest",
-    "tailwindcss": "latest"
+    "@tailwindcss/vite": "^4.1.17",
+    "tailwindcss": "^4.1.17"
   }
 }
