@@ -12,6 +12,36 @@ public_folder: /uploads
 publish_mode: simple
 
 collections:
+  - name: site_settings
+    label: Site Settings
+    files:
+      - name: general
+        label: General
+        file: src/data/site.json
+        format: json
+        fields:
+          - { label: Site Name, name: site_name, widget: string }
+          - { label: Tagline, name: tagline, widget: string, required: false }
+          - { label: Default Description, name: default_description, widget: text, required: false }
+          - { label: Language, name: language, widget: string, default: en }
+          - { label: Phone, name: phone, widget: string, required: false }
+          - { label: Email, name: email, widget: string, required: false }
+          - { label: Address, name: address, widget: text, required: false }
+          - { label: Logo, name: logo, widget: image, required: false }
+          - { label: Footer Note, name: footer_note, widget: string, required: false }
+      - name: navigation
+        label: Main Navigation
+        file: src/data/navigation.json
+        format: json
+        fields:
+          - label: Navigation Items
+            name: items
+            widget: list
+            fields:
+              - { label: Label, name: label, widget: string }
+              - { label: URL, name: url, widget: string }
+              - { label: External Link, name: external, widget: boolean, required: false, default: false }
+
   - name: pages
     label: Pages
     folder: src/content/pages
