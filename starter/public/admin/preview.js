@@ -47,11 +47,7 @@ const PagePreview = createClass({
     const sections = entry.getIn(['data', 'sections']);
     const sectionData = sections && sections.toJS ? sections.toJS() : [];
     const content = [
-      h('div', { className: 'preview-page-heading', key: 'heading' },
-        h('small', {}, 'PAGE PREVIEW'),
-        h('h1', {}, title),
-        description ? h('p', {}, description) : null
-      ),
+      ...(sectionData.length === 0 ? [h('div', { className: 'preview-page-heading', key: 'heading' }, h('h1', {}, title), description ? h('p', {}, description) : null)] : []),
       ...sectionData.map((section, index) => renderSection(section, index, getAsset)),
       h('article', { className: 'preview-body', key: 'body' }, widgetFor('body'))
     ];
