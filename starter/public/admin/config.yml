@@ -57,7 +57,7 @@ collections:
     extension: md
     format: frontmatter
     slug: '{{slug}}'
-    preview_path: '{{slug}}/'
+    preview_path: '/{{slug}}/'
     fields:
       - { label: Title, name: title, widget: string }
       - { label: Description, name: description, widget: text, required: false }
@@ -77,7 +77,7 @@ collections:
             options: [hero, rich_text, image_text, feature_grid, cta, faq]
           - { label: Eyebrow, name: eyebrow, widget: string, required: false }
           - { label: Heading, name: heading, widget: string, required: false }
-          - { label: Body, name: body, widget: markdown, required: false }
+          - { label: Body, name: body, widget: text, required: false }
           - { label: Image, name: image, widget: image, required: false }
           - { label: Image Alt, name: image_alt, widget: string, required: false }
           - { label: Button Label, name: button_label, widget: string, required: false }
@@ -97,7 +97,7 @@ collections:
     extension: md
     format: frontmatter
     slug: '{{slug}}'
-    preview_path: 'services/{{slug}}/'
+    preview_path: '/services/{{slug}}/'
     fields:
       - { label: Title, name: title, widget: string }
       - { label: Description, name: description, widget: text }
@@ -120,7 +120,7 @@ collections:
     extension: md
     format: frontmatter
     slug: '{{slug}}'
-    preview_path: 'blog/{{slug}}/'
+    preview_path: '/blog/{{slug}}/'
     fields:
       - { label: Title, name: title, widget: string }
       - { label: Excerpt, name: excerpt, widget: text, required: false }
