@@ -9,7 +9,7 @@ backend:
 media_folder: /public/uploads
 public_folder: /uploads
 
-publish_mode: simple
+publish_mode: preview
 
 collections:
   - name: site_settings
