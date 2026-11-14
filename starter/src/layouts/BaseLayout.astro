@@ -27,6 +27,7 @@ const canonical = canonicalUrl ? new URL(canonicalUrl, siteUrl) : new URL(Astro.
 const resolvedImage = ogImage || site.default_og_image;
 const imageUrl = resolvedImage ? new URL(resolvedImage, siteUrl).href : undefined;
 const indexingEnabled = import.meta.env.PUBLIC_SITE_INDEXING === 'true';
+const socialLinks = site.social_links as Array<{ label: string; url: string }>;
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
@@ -35,7 +36,7 @@ const organizationSchema = {
   ...(site.logo ? { logo: new URL(site.logo, siteUrl).href } : {}),
   ...(site.email ? { email: site.email } : {}),
   ...(site.phone ? { telephone: site.phone } : {}),
-  ...(site.social_links?.length ? { sameAs: site.social_links.map((item) => item.url) } : {}),
+  ...(socialLinks.length ? { sameAs: socialLinks.map((item) => item.url) } : {}),
 };
 const extraSchemas = Array.isArray(structuredData) ? structuredData : [structuredData];
 const jsonLd = JSON.stringify([organizationSchema, ...extraSchemas]).replace(/</g, '\\u003c');
