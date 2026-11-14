@@ -2,10 +2,12 @@
   "site_name": "Company Name",
   "tagline": "A short, clear statement about the company.",
   "default_description": "A verified description of the company and the services it provides.",
+  "default_og_image": "",
   "language": "en",
   "phone": "",
   "email": "",
   "address": "",
   "logo": "",
+  "social_links": [],
   "footer_note": "© {year} Company Name. All rights reserved."
 }
