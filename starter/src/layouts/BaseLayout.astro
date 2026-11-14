@@ -28,6 +28,7 @@ const resolvedImage = ogImage || site.default_og_image;
 const imageUrl = resolvedImage ? new URL(resolvedImage, siteUrl).href : undefined;
 const indexingEnabled = import.meta.env.PUBLIC_SITE_INDEXING === 'true';
 const socialLinks = (site.social_links ?? []) as unknown as Array<{ label: string; url: string }>;
+const normalizeSocialUrl = (value: string) => /^https?:\/\//i.test(value) ? value : `https://${value.replace(/^\/+/, '')}`;
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
@@ -36,7 +37,7 @@ const organizationSchema = {
   ...(site.logo ? { logo: new URL(site.logo, siteUrl).href } : {}),
   ...(site.email ? { email: site.email } : {}),
   ...(site.phone ? { telephone: site.phone } : {}),
-  ...(socialLinks.length > 0 ? { sameAs: socialLinks.map(({ url }) => url) } : {}),
+  ...(socialLinks.length > 0 ? { sameAs: socialLinks.filter(({ url }) => !!url).map(({ url }) => normalizeSocialUrl(url)) } : {}),
 };
 const extraSchemas = Array.isArray(structuredData) ? structuredData : [structuredData];
 const jsonLd = JSON.stringify([organizationSchema, ...extraSchemas]).replace(/</g, '\\u003c');

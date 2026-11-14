@@ -8,9 +8,10 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro check && astro build",
     "preview": "astro preview",
-    "check": "astro check"
+    "check": "astro check",
+    "qa:build": "node scripts/qa-build.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",

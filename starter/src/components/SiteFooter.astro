@@ -1,15 +1,32 @@
 ---
 import site from '../data/site.json';
+
+type SocialLink = { label: string; url: string };
+const socialLinks = (site.social_links ?? []) as SocialLink[];
+const normalizeUrl = (value: string) => /^https?:\/\//i.test(value) ? value : `https://${value.replace(/^\/+/, '')}`;
+const footerNote = (site.footer_note || '').replace('{year}', String(new Date().getFullYear())).replace('Company Name', site.site_name);
 ---
 <footer class="site-footer">
-  <div>
-    <strong>{site.site_name}</strong>
+  <div class="site-footer-brand">
+    <a class="site-footer-logo" href="/" aria-label={`${site.site_name} home`}>
+      {site.logo ? <img src={site.logo} alt={site.site_name} loading="lazy" /> : <strong>{site.site_name}</strong>}
+    </a>
     {site.tagline && <p>{site.tagline}</p>}
   </div>
-  <div class="site-footer-contact">
+  <div class="site-footer-contact" aria-label="Contact information">
     {site.phone && <a href={`tel:${site.phone.replace(/[^+\d]/g, '')}`}>{site.phone}</a>}
     {site.email && <a href={`mailto:${site.email}`}>{site.email}</a>}
     {site.address && <span>{site.address}</span>}
   </div>
-  <small>{site.footer_note.replace('{year}', String(new Date().getFullYear())).replace('Company Name', site.site_name)}</small>
+  {socialLinks.length > 0 && (
+    <nav class="site-footer-social" aria-label="Social media">
+      {socialLinks.filter((item) => item.label && item.url).map((item) => (
+        <a href={normalizeUrl(item.url)} target="_blank" rel="noopener noreferrer" aria-label={item.label}>
+          <span class="social-mark" aria-hidden="true">{item.label.trim().charAt(0).toUpperCase()}</span>
+          <span>{item.label}</span>
+        </a>
+      ))}
+    </nav>
+  )}
+  {footerNote && <small class="site-footer-note">{footerNote}</small>}
 </footer>

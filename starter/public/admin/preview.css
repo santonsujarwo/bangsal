@@ -13,8 +13,9 @@ body { margin: 0; background: #f3f4f6; color: #17202a; font-family: Arial, sans-
 .preview-section p { max-width: 42rem; }
 .preview-eyebrow, .preview-page-heading small { color: #64748b; font-size: .7rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
 .preview-button { display: inline-block; margin-top: .5rem; padding: .65rem 1rem; border-radius: 999px; background: #17202a; color: white; font-size: .85rem; }
-.preview-image-text { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 1.5rem; }
+.preview-image-text, .preview-hero-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 1.5rem; }
 .preview-image, .preview-featured-image { display: block; max-width: 100%; height: auto; border-radius: 12px; }
+.preview-image { width: 100%; max-height: 24rem; object-fit: cover; }
 .preview-featured-image { width: 100%; max-height: 22rem; object-fit: cover; margin: 1.5rem 0; }
 .preview-cta { margin: 2rem 0; padding: 2rem; border: 0; border-radius: 16px; background: #f1f5f9; }
 .preview-feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: .75rem; margin-top: 1rem; }
@@ -27,4 +28,21 @@ body { margin: 0; background: #f3f4f6; color: #17202a; font-family: Arial, sans-
 .preview-meta { color: #64748b; font-size: .85rem; margin: 1rem 0 2rem; }
 .preview-body { padding: 1.5rem 0; }
 .preview-footer { padding: 1.5rem 5%; border-top: 1px solid #e5e7eb; color: #64748b; font-size: .8rem; }
-@media (max-width: 600px) { .preview-header { align-items: flex-start; flex-direction: column; } .preview-header nav { flex-wrap: wrap; } .preview-image-text { grid-template-columns: 1fr; } }
+.preview-settings { min-height: 100vh; background: #fff; font-family: Arial, sans-serif; color: #17202a; }
+.preview-settings-header { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1.25rem 5%; border-bottom: 1px solid #e5e7eb; }
+.preview-settings-header img { max-width: 12rem; max-height: 3rem; object-fit: contain; }
+.preview-settings-main { max-width: 52rem; margin: 0 auto; padding: 2rem 5%; }
+.preview-settings-main h1 { margin: .35rem 0; font-size: clamp(2rem, 5vw, 3rem); }
+.preview-settings-main section { padding-block: 1rem; border-top: 1px solid #e5e7eb; }
+.preview-settings-main h2 { font-size: 1.15rem; }
+.preview-social-links, .preview-navigation-list { display: grid; gap: .65rem; }
+.preview-social-links span, .preview-navigation-list > div { padding: .8rem 1rem; border: 1px solid #e5e7eb; border-radius: 8px; }
+.preview-navigation-list > div { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem; }
+.preview-navigation-list span { color: #64748b; }
+.preview-og-image { display: block; width: 100%; max-height: 18rem; object-fit: cover; border-radius: 10px; }
+@media (max-width: 600px) {
+  .preview-header { align-items: flex-start; flex-direction: column; }
+  .preview-header nav { flex-wrap: wrap; }
+  .preview-image-text, .preview-hero-layout { grid-template-columns: 1fr; }
+  .preview-navigation-list > div { flex-direction: column; }
+}
