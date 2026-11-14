@@ -18,7 +18,7 @@ If you copy the starter into a new repository where the Astro project is at the 
 
 1. Sign in with a GitHub account that has **Write** access to the repository.
 2. Open `/admin/` and choose the GitHub backend.
-3. When prompted, provide a fine-grained GitHub Personal Access Token restricted to this repository with **Contents: Read and write** permission.
+3. When prompted, provide a fine-grained GitHub Personal Access Token restricted to this repository with **Contents: Read and write** and **Pull requests: Read and write** permissions.
 4. Do not place the token in this repository, source code, environment examples, or a committed config file.
 
 A PAT is a practical bootstrap path for a single trusted editor. It is not a shared credential and should be rotated/revoked from GitHub when no longer needed.
