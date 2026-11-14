@@ -6,14 +6,23 @@ const posts = await getCollection('posts', ({ data }) => !data.draft);
 const sortedPosts = posts.sort((a, b) => {
   const dateA = a.data.published_at?.getTime() ?? 0;
   const dateB = b.data.published_at?.getTime() ?? 0;
-  return dateB - dateA;
 });
 ---
 <BaseLayout title="Blog" description="News and insights.">
   <main>
     <h1>Blog</h1>
-    <ul>
-      {sortedPosts.map((post) => <li><a href={`/blog/${post.id}/`}>{post.data.title}</a></li>)}
-    </ul>
+    <div class="content-card-grid">
+      {sortedPosts.map((post) => (
+        <article class="content-card">
+          <a class="content-card-link" href={`/blog/${post.id}/`}>
+            {post.data.featured_image && <img src={post.data.featured_image} alt={post.data.featured_image_alt ?? ''} loading="lazy" decoding="async" />}
+            <div class="content-card-copy">
+              <h2>{post.data.title}</h2>
+              {post.data.excerpt && <p>{post.data.excerpt}</p>}
+            </div>
+          </a>
+        </article>
+      ))}
+    </div>
   </main>
 </BaseLayout>
