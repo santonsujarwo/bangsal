@@ -19,3 +19,5 @@ canonical_url: ''
 og_image: ''
 noindex: false
 ---
+
+lorem ipsum dolor sit amet
