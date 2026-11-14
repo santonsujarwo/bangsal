@@ -82,6 +82,13 @@ collections:
           - { label: Image Alt, name: image_alt, widget: string, required: false }
           - { label: Button Label, name: button_label, widget: string, required: false }
           - { label: Button URL, name: button_url, widget: string, required: false }
+          - label: Items
+            name: items
+            widget: list
+            required: false
+            fields:
+              - { label: Item Title, name: title, widget: string }
+              - { label: Item Description, name: body, widget: text, required: false }
       - { label: Draft, name: draft, widget: boolean, default: false }
       - { label: SEO Title, name: seo_title, widget: string, required: false }
       - { label: SEO Description, name: seo_description, widget: text, required: false }
