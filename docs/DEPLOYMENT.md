@@ -38,6 +38,6 @@ Required GitHub permissions for the CMS identity:
 
 For a GitHub App, install it only on this repository and keep its private key and client secret in the Cloudflare Worker Authenticator secrets. For a PAT used during initial setup, grant the same repository-scoped permissions and never commit the token.
 
-## Lockfile
+## Runtime and lockfile
 
-The starter currently has no committed `package-lock.json`. The CI workflow uses `npm install` for now. After the first successful install on Node 22.12+, commit the generated `starter/package-lock.json` and change CI to `npm ci` so dependency resolution becomes reproducible.
+The starter requires Node.js `22.22.1` or newer. The starter currently has no committed `package-lock.json`; CI uses `npm install` for now. After a successful install, commit the generated `starter/package-lock.json` and change CI to `npm ci` so dependency resolution becomes reproducible.
