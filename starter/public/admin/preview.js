@@ -25,10 +25,25 @@ const renderSection = (section, index, getAsset) => {
   const button = section.button_label && section.button_url
     ? h('span', { className: 'preview-button' }, section.button_label)
     : null;
+  const items = Array.isArray(section.items) ? section.items : [];
 
   if (section.type === 'image_text') {
     return h('section', { className: 'preview-section preview-image-text', key: index }, image,
       h('div', {}, eyebrow, heading, body, button));
+  }
+  if (section.type === 'feature_grid') {
+    return h('section', { className: 'preview-section', key: index }, heading, body,
+      h('div', { className: 'preview-feature-grid' }, items.map((item, itemIndex) =>
+        h('article', { className: 'preview-feature-card', key: itemIndex }, h('h3', {}, item.title), item.body ? h('p', {}, item.body) : null)
+      ))
+    );
+  }
+  if (section.type === 'faq') {
+    return h('section', { className: 'preview-section', key: index }, heading, body,
+      h('div', { className: 'preview-faq-list' }, items.map((item, itemIndex) =>
+        h('details', { key: itemIndex }, h('summary', {}, item.title), item.body ? h('p', {}, item.body) : null)
+      ))
+    );
   }
   if (section.type === 'cta') {
     return h('section', { className: 'preview-section preview-cta', key: index }, heading, body, button);
