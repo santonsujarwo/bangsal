@@ -16,7 +16,7 @@ const pageSection = z.object({
 const sharedSeoFields = {
   seo_title: z.string().optional(),
   seo_description: z.string().optional(),
-  canonical_url: z.string().url().optional(),
+  canonical_url: z.string().optional(),
   og_image: z.string().optional(),
   noindex: z.boolean().default(false),
 };
