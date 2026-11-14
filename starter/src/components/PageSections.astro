@@ -18,13 +18,20 @@ interface Props { sections?: Section[] }
 const { sections = [] } = Astro.props;
 ---
 {sections.map((section) => (
-  <section class:list={['content-section', `section-${section.type}`]}>
+  <section class:list={['content-section', `section-${section.type}`, section.type === 'hero' && section.image ? 'section-has-image' : '']}>
     {section.type === 'hero' && (
-      <div class="section-inner">
-        {section.eyebrow && <p class="eyebrow">{section.eyebrow}</p>}
-        {section.heading && <h1>{section.heading}</h1>}
-        {section.body && <p>{section.body}</p>}
-        {section.button_label && section.button_url && <a class="button" href={section.button_url}>{section.button_label}</a>}
+      <div class="section-inner hero-layout">
+        <div class="hero-copy">
+          {section.eyebrow && <p class="eyebrow">{section.eyebrow}</p>}
+          {section.heading && <h1>{section.heading}</h1>}
+          {section.body && <p>{section.body}</p>}
+          {section.button_label && section.button_url && <a class="button" href={section.button_url}>{section.button_label}</a>}
+        </div>
+        {section.image && (
+          <figure class="hero-media">
+            <img src={section.image} alt={section.image_alt ?? ''} loading="eager" decoding="async" />
+          </figure>
+        )}
       </div>
     )}
     {section.type === 'rich_text' && (
@@ -35,7 +42,7 @@ const { sections = [] } = Astro.props;
     )}
     {section.type === 'image_text' && (
       <div class="section-inner image-text">
-        {section.image && <img src={section.image} alt={section.image_alt ?? ''} loading="lazy" />}
+        {section.image && <img src={section.image} alt={section.image_alt ?? ''} loading="lazy" decoding="async" />}
         <div>
           {section.eyebrow && <p class="eyebrow">{section.eyebrow}</p>}
           {section.heading && <h2>{section.heading}</h2>}
