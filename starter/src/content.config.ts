@@ -59,7 +59,7 @@ const posts = defineCollection({
     featured_image_alt: z.string().optional(),
     category: z.string().optional(),
     tags: z.array(z.string()).default([]),
-    draft: z.boolean().default(true),
+    draft: z.boolean().default(false),
     ...sharedSeoFields,
   }),
 });
