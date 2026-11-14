@@ -8,10 +8,36 @@ interface Props {
   title: string;
   description?: string;
   noindex?: boolean;
+  canonicalUrl?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
-const { title, description = site.default_description, noindex = false } = Astro.props;
+const {
+  title,
+  description = site.default_description,
+  noindex = false,
+  canonicalUrl,
+  ogImage,
+  ogType = 'website',
+  structuredData = [],
+} = Astro.props;
 const siteUrl = Astro.site ?? new URL('https://example.com');
-const canonical = new URL(Astro.url.pathname, siteUrl);
+const canonical = canonicalUrl ? new URL(canonicalUrl, siteUrl) : new URL(Astro.url.pathname, siteUrl);
+const resolvedImage = ogImage || site.default_og_image;
+const imageUrl = resolvedImage ? new URL(resolvedImage, siteUrl).href : undefined;
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: site.site_name,
+  url: siteUrl.href,
+  ...(site.logo ? { logo: new URL(site.logo, siteUrl).href } : {}),
+  ...(site.email ? { email: site.email } : {}),
+  ...(site.phone ? { telephone: site.phone } : {}),
+  ...(site.social_links?.length ? { sameAs: site.social_links.map((item) => item.url) } : {}),
+};
+const extraSchemas = Array.isArray(structuredData) ? structuredData : [structuredData];
+const jsonLd = JSON.stringify([organizationSchema, ...extraSchemas]).replace(/</g, '\\u003c');
 ---
 <!doctype html>
 <html lang={site.language || 'en'}>
@@ -20,10 +46,19 @@ const canonical = new URL(Astro.url.pathname, siteUrl);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
-    <link rel="canonical" href={canonical} />
+    <link rel="canonical" href={canonical.href} />
     {noindex && <meta name="robots" content="noindex,nofollow" />}
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={site.site_name} />
     <meta property="og:title" content={title} />
     {description && <meta property="og:description" content={description} />}
+    <meta property="og:url" content={canonical.href} />
+    {imageUrl && <meta property="og:image" content={imageUrl} />}
+    <meta name="twitter:card" content={imageUrl ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:title" content={title} />
+    {description && <meta name="twitter:description" content={description} />}
+    {imageUrl && <meta name="twitter:image" content={imageUrl} />}
+    <script type="application/ld+json" set:html={jsonLd} />
   </head>
   <body>
     <SiteHeader />
