@@ -13,7 +13,13 @@ export async function getStaticPaths() {
 const { page } = Astro.props;
 const { Content } = await render(page);
 ---
-<BaseLayout title={page.data.seo_title ?? page.data.title} description={page.data.seo_description ?? page.data.description} noindex={page.data.noindex}>
+<BaseLayout
+  title={page.data.seo_title ?? page.data.title}
+  description={page.data.seo_description ?? page.data.description}
+  canonicalUrl={page.data.canonical_url}
+  ogImage={page.data.og_image}
+  noindex={page.data.noindex}
+>
   <main>
     <PageSections sections={page.data.sections} />
     <article class="page-body"><Content /></article>
