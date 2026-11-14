@@ -32,8 +32,13 @@ const serviceSchema = {
 >
   <main>
     <a href="/services/">Services</a>
-    <h1>{service.data.title}</h1>
-    <p>{service.data.description}</p>
-    <Content />
+    <article class="preview-article">
+      <h1>{service.data.title}</h1>
+      <p>{service.data.description}</p>
+      {service.data.featured_image && (
+        <img class="content-featured-image" src={service.data.featured_image} alt={service.data.featured_image_alt ?? ''} loading="eager" decoding="async" />
+      )}
+      <Content />
+    </article>
   </main>
 </BaseLayout>
