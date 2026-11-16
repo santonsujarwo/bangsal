@@ -4,28 +4,33 @@ import { getCollection } from 'astro:content';
 import site from '../../data/site.json';
 
 const services = await getCollection('services');
-const sortedServices = services.sort((a, b) => a.data.sort_order - b.data.sort_order);
+const sortedServices = services.sort((a, b) => Number(b.data.featured) - Number(a.data.featured) || a.data.sort_order - b.data.sort_order);
 const pageTitle = site.services_title || 'Services';
 const pageDescription = site.services_description || 'Explore our services.';
 ---
 <BaseLayout title={pageTitle} description={pageDescription}>
   <main>
     <header class="listing-header">
+      <p class="eyebrow">What we do</p>
       <h1>{pageTitle}</h1>
       {pageDescription && <p>{pageDescription}</p>}
     </header>
-    <div class="content-card-grid">
-      {sortedServices.map((service) => (
-        <article class="content-card">
-          <a class="content-card-link" href={`/services/${service.id}/`}>
-            {service.data.featured_image && <img src={service.data.featured_image} alt={service.data.featured_image_alt ?? ''} loading="lazy" decoding="async" />}
-            <div class="content-card-copy">
-              <h2>{service.data.title}</h2>
-              <p>{service.data.description}</p>
-            </div>
-          </a>
-        </article>
-      ))}
-    </div>
+    {sortedServices.length ? (
+      <div class="content-card-grid">
+        {sortedServices.map((service) => (
+          <article class="content-card">
+            <a class="content-card-link" href={`/services/${service.id}/`} aria-label={`Explore ${service.data.title}`}>
+              {service.data.featured_image && <img src={service.data.featured_image} alt={service.data.featured_image_alt ?? ''} loading="lazy" decoding="async" />}
+              <div class="content-card-copy">
+                {service.data.featured && <span class="card-meta">Featured service</span>}
+                <h2>{service.data.title}</h2>
+                <p>{service.data.description}</p>
+                <span class="card-read-more">Explore service <span aria-hidden="true">↗</span></span>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+    ) : <div class="empty-state"><h2>Services coming soon</h2><p>Our service information will be available here shortly.</p></div>}
   </main>
 </BaseLayout>
