@@ -6,6 +6,9 @@ type SocialLink = { label: string; url: string };
 type NavigationItem = { label: string; url: string; external?: boolean };
 const socialLinks = (site.social_links ?? []) as SocialLink[];
 const navItems = navigation.items as NavigationItem[];
+const isSafeHref = (url: string) => url.startsWith('/') || url.startsWith('#') || /^https?:\/\//i.test(url) || /^(mailto|tel):/i.test(url);
+const safeNavItems = navItems.filter((item) => isSafeHref(item.url));
+const safeSocialLinks = socialLinks.filter((item) => item.label && /^https?:\/\//i.test(item.url));
 const normalizeUrl = (value: string) => /^https?:\/\//i.test(value) ? value : `https://${value.replace(/^\/+/, '')}`;
 const footerNote = (site.footer_note || '').replace('{year}', String(new Date().getFullYear())).replace('Company Name', site.site_name);
 ---
@@ -17,11 +20,11 @@ const footerNote = (site.footer_note || '').replace('{year}', String(new Date().
           {site.logo ? <img src={site.logo} alt={site.site_name} loading="lazy" /> : <span>{site.site_name}</span>}
         </a>
         {site.tagline && <p>{site.tagline}</p>}
-        {socialLinks.length > 0 && (
+        {safeSocialLinks.length > 0 && (
           <nav class="site-footer-social" aria-label="Social media">
-            {socialLinks.filter((item) => item.label && item.url).map((item) => (
+            {safeSocialLinks.map((item) => (
               <a href={normalizeUrl(item.url)} target="_blank" rel="noopener noreferrer" aria-label={item.label}>
-                <span aria-hidden="true">{item.label.trim().charAt(0).toUpperCase()}</span>
+                <span>{item.label}</span>
               </a>
             ))}
           </nav>
@@ -30,7 +33,7 @@ const footerNote = (site.footer_note || '').replace('{year}', String(new Date().
       <div>
         <h2 class="site-footer-heading">Explore</h2>
         <nav class="site-footer-links" aria-label="Footer navigation">
-          {navItems.filter((item) => !item.external).map((item) => <a href={item.url}>{item.label}</a>)}
+          {safeNavItems.filter((item) => !item.external).map((item) => <a href={item.url}>{item.label}</a>)}
         </nav>
       </div>
       <div>
@@ -44,7 +47,6 @@ const footerNote = (site.footer_note || '').replace('{year}', String(new Date().
     </div>
     <div class="site-footer-bottom">
       <p>{footerNote}</p>
-      <p>Designed for clear communication and better business experiences.</p>
     </div>
   </div>
 </footer>
