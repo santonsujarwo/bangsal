@@ -6,7 +6,9 @@ sections: []
 draft: false
 seo_title: ini seo title
 seo_description: ini seo deskripsi
-canonical_url: /
+canonical_url: /beranda
 og_image: ''
 noindex: false
 ---
+
+ini body
