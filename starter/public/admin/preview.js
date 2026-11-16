@@ -60,17 +60,34 @@ const PagePreview = createClass({
     const { entry, getAsset } = this.props;
     const title = entry.getIn(['data', 'title']) || 'Untitled page';
     const description = entry.getIn(['data', 'description']);
-    const mode = entry.getIn(['data', 'content_mode', 'type']) || 'block_builder';
-    const sections = entry.getIn(['data', 'content_mode', 'sections']) || entry.getIn(['data', 'sections']);
+    const editor = entry.getIn(['data', 'content_mode']);
+    const isObjectEditor = editor && typeof editor.get === 'function';
+    const mode = isObjectEditor ? (editor.get('type') || 'block_builder') : (editor || 'block_builder');
+    const sections = isObjectEditor ? editor.get('sections') : entry.getIn(['data', 'sections']);
     const sectionData = sections && sections.toJS ? sections.toJS() : [];
-    const content = [
-      ...(sectionData.length === 0 && mode === 'block_builder'
-        ? [h('div', { className: 'preview-page-heading', key: 'heading' }, h('h1', {}, title), description ? h('p', {}, description) : null)]
-        : []),
-      ...(mode === 'block_builder'
-        ? sectionData.map((section, index) => renderSection(section, index, getAsset))
-        : [h('article', { className: 'preview-body', key: 'body' }, entry.getIn(['data', 'content_mode', 'body']) || 'Add your page content in the Classic Content Editor.')])
-    ];
+    const classicBody = (isObjectEditor ? editor.get('body') : null)
+      || entry.getIn(['data', 'body'])
+      || '';
+    let content;
+    if (mode === 'classic') {
+      const blocks = String(classicBody).trim().split(/\\n\\s*\\n/).filter(Boolean);
+      content = [h('article', { className: 'preview-body preview-classic-content', key: 'body' },
+        blocks.length
+          ? blocks.map((block, index) => {
+              const heading = block.match(/^(#{1,6})\\s+(.+)$/);
+              if (heading) return h(`h${heading[1].length}`, { key: index }, heading[2]);
+              return h('p', { key: index }, block.replace(/\\n/g, ' '));
+            })
+          : h('p', { className: 'preview-placeholder' }, 'Add your page content in the Classic Content Editor.')
+      )];
+    } else {
+      content = [
+        ...(sectionData.length === 0
+          ? [h('div', { className: 'preview-page-heading', key: 'heading' }, h('h1', {}, title), description ? h('p', {}, description) : null)]
+          : []),
+        ...sectionData.map((section, index) => renderSection(section, index, getAsset))
+      ];
+    }
     return PreviewShell(content);
   }
 });
