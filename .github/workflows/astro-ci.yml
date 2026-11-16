@@ -6,6 +6,7 @@ on:
       - main
       - 'feat/**'
       - 'fix/**'
+      - 'test/**'
   pull_request:
     branches:
       - main
@@ -36,6 +37,9 @@ jobs:
 
       - name: Build static site
         run: npm run build
+
+      - name: Test CMS editor content modes and rendered output
+        run: npm run test:cms
 
       - name: Verify generated routes and media
         run: npm run qa:build
