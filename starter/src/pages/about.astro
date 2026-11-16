@@ -4,7 +4,7 @@ import PageSections from '../components/PageSections.astro';
 import { getEntry, render } from 'astro:content';
 
 const entry = await getEntry('pages', 'about');
-if (!entry || entry.data.draft) return Astro.redirect('/404/');
+if (!entry) return Astro.redirect('/404/');
 const { Content } = await render(entry);
 ---
 <BaseLayout
