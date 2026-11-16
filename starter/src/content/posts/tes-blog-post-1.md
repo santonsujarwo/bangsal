@@ -14,7 +14,7 @@ tags:
 draft: false
 seo_title: The Main Stages of a Building Project
 seo_description: Understand the typical stages of a building project, from the initial brief and preparation to construction and handover.
-canonical_url: /blog/building-project-stages/
+canonical_url: ''
 og_image: https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1200&q=85
 noindex: false
 ---
