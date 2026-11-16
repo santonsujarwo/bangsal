@@ -33,6 +33,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .social-mark { display: inline-grid; place-items: center; width: 1.75rem; height: 1.75rem; border: 1px solid #d1d5db; border-radius: 50%; font-size: .8rem; font-weight: 700; }
 .site-footer-note { color: #596579; }
 main { width: min(100% - 2rem, 72rem); margin-inline: auto; }
+.site-body-landing main { width: 100%; }
 .content-section { padding-block: clamp(3rem, 8vw, 7rem); }
 .section-inner { width: min(100%, 64rem); margin-inline: auto; }
 .content-section h1 { max-width: 16ch; font-size: clamp(2.5rem, 7vw, 5.5rem); line-height: 1.05; }
@@ -46,6 +47,9 @@ main { width: min(100% - 2rem, 72rem); margin-inline: auto; }
 .image-text { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: center; gap: 2rem; }
 .image-text img, .content-featured-image { display: block; width: 100%; height: auto; border-radius: 1rem; }
 .content-featured-image { max-height: 36rem; object-fit: cover; margin-block: 1.5rem; }
+.listing-header { padding-block: clamp(2.5rem, 6vw, 5rem) 1rem; }
+.listing-header h1 { margin: 0; font-size: clamp(2.25rem, 6vw, 4rem); line-height: 1.1; }
+.listing-header p { max-width: 68ch; color: #596579; }
 .content-card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); gap: 1.25rem; margin-block: 2rem 4rem; }
 .content-card { min-width: 0; border: 1px solid #e5e7eb; border-radius: 1rem; overflow: hidden; }
 .content-card-link { display: block; height: 100%; text-decoration: none; }
