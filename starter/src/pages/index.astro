@@ -7,6 +7,7 @@ const home = await getEntry('pages', 'home');
 const Content = home ? (await render(home)).Content : null;
 const seo = home?.data.seo;
 const contentMode = home?.data.content_mode ?? 'blocks';
+const sections = home?.data.sections ?? [];
 ---
 <BaseLayout
   title={seo?.title ?? home?.data.seo_title ?? home?.data.title ?? 'Company Name'}
@@ -19,7 +20,16 @@ const contentMode = home?.data.content_mode ?? 'blocks';
   <main>
     {home ? (
       contentMode === 'blocks' ? (
-        <PageSections sections={home.data.sections} />
+        sections.length > 0 ? (
+          <PageSections sections={sections} />
+        ) : (
+          <section class="content-section">
+            <div class="section-inner">
+              <h1>{home.data.title}</h1>
+              {home.data.description && <p>{home.data.description}</p>}
+            </div>
+          </section>
+        )
       ) : (
         <article class="page-body">{Content && <Content />}</article>
       )

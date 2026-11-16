@@ -46,3 +46,5 @@ body { margin: 0; background: #f3f4f6; color: #17202a; font-family: Arial, sans-
   .preview-image-text, .preview-hero-layout { grid-template-columns: 1fr; }
   .preview-navigation-list > div { flex-direction: column; }
 }
+
+.preview-image-text-no-image { grid-template-columns: minmax(0, 1fr); }
