@@ -68,7 +68,6 @@ const pages = defineCollection({
     description: z.string().optional(),
     template: z.enum(['default', 'landing']).default('default'),
     sections: z.array(pageSection).default([]),
-    draft: z.boolean().default(false),
     ...sharedSeoFields,
   }),
 });
