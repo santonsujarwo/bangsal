@@ -10,14 +10,6 @@ const isCurrent = (url: string) => {
   const target = url.replace(/\/$/, '') || '/';
   return target === '/' ? currentPath === '/' : currentPath === target || currentPath.startsWith(`${target}/`);
 };
-const navLink = (item: NavigationItem) => (
-  <a
-    href={item.url}
-    target={item.external ? '_blank' : undefined}
-    rel={item.external ? 'noopener noreferrer' : undefined}
-    aria-current={isCurrent(item.url) ? 'page' : undefined}
-  >{item.label}</a>
-);
 ---
 <header class="site-header">
   <div class="site-header-inner">
@@ -25,7 +17,11 @@ const navLink = (item: NavigationItem) => (
       {site.logo ? <img src={site.logo} alt={site.site_name} /> : <span>{site.site_name}</span>}
     </a>
     <nav class="site-nav site-nav-desktop" aria-label="Main navigation">
-      {navItems.map((item) => navLink(item))}
+      {navItems.map((item) => (
+        <a href={item.url} target={item.external ? '_blank' : undefined} rel={item.external ? 'noopener noreferrer' : undefined} aria-current={isCurrent(item.url) ? 'page' : undefined}>
+          {item.label}
+        </a>
+      ))}
     </nav>
     <a class="site-header-cta" href="/contact/">Let's Talk <span aria-hidden="true">↗</span></a>
     <details class="site-nav-mobile">
@@ -34,7 +30,11 @@ const navLink = (item: NavigationItem) => (
         <span>Menu</span>
       </summary>
       <nav class="site-nav" aria-label="Mobile navigation">
-        {navItems.map((item) => navLink(item))}
+        {navItems.map((item) => (
+          <a href={item.url} target={item.external ? '_blank' : undefined} rel={item.external ? 'noopener noreferrer' : undefined} aria-current={isCurrent(item.url) ? 'page' : undefined}>
+            {item.label}
+          </a>
+        ))}
         <a href="/contact/">Let's Talk ↗</a>
       </nav>
     </details>
