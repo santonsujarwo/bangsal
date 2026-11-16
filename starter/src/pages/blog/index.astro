@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import site from '../../data/site.json';
 
-const posts = await getCollection('posts');
+const posts = await getCollection('posts', ({ data }) => !data.draft);
 const sortedPosts = posts.sort((a, b) => (b.data.published_at?.getTime() ?? 0) - (a.data.published_at?.getTime() ?? 0));
 const pageTitle = site.blog_title || 'Blog';
 const pageDescription = site.blog_description || 'News and insights.';

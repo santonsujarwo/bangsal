@@ -4,8 +4,8 @@ import PageSections from '../components/PageSections.astro';
 import { getCollection } from 'astro:content';
 import { marked } from 'marked';
 export async function getStaticPaths() {
- const reservedSlugs = new Set(['about','contact','blog','services','admin','404']);
- const pages = await getCollection('pages', ({ id }) => !reservedSlugs.has(id));
+ const reservedSlugs = new Set(['home','about','contact','blog','services','admin','404']);
+ const pages = await getCollection('pages', ({ id, data }) => !reservedSlugs.has(id) && !data.draft);
  return pages.map(page => ({ params: { slug: page.id }, props: { page } }));
 }
 const { page } = Astro.props;
