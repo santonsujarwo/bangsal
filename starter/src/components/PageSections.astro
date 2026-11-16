@@ -16,7 +16,7 @@ interface Section {
 }
 interface Props { sections?: Section[] }
 const { sections = [] } = Astro.props;
-const isSafeHref = (url?: string) => !!url && (url.startsWith('/') || url.startsWith('#') || /^https?:\/\//i.test(url) || /^(mailto|tel):/i.test(url));
+const isSafeHref = (url?: string) => !!url && ((url.startsWith('/') && !url.startsWith('//')) || url.startsWith('#') || /^https?:\/\//i.test(url) || /^(mailto|tel):/i.test(url));
 ---
 {sections.map((section, index) => (
   <section class:list={['content-section', `section-${section.type}`, section.type === 'hero' && section.image ? 'section-has-image' : '']} aria-labelledby={section.heading ? `section-heading-${index}` : undefined}>
