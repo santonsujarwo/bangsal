@@ -4,16 +4,13 @@ import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
-  return posts.map((post) => ({
-    params: { slug: post.id },
-    props: { post },
-  }));
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
 }
-
 const { post } = Astro.props;
 const { Content } = await render(post);
 const siteUrl = Astro.site ?? new URL('https://example.com');
 const seo = post.data.seo;
+const formatDate = (date?: Date) => date ? new Intl.DateTimeFormat('en', { dateStyle: 'long' }).format(date) : '';
 const articleSchema = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
@@ -36,12 +33,15 @@ const articleSchema = {
   structuredData={articleSchema}
 >
   <article class="preview-article">
-    <a href="/blog/">Blog</a>
+    <a href="/blog/">← All articles</a>
+    <div class="card-meta">
+      {post.data.category && <span>{post.data.category}</span>}
+      {post.data.published_at && <time datetime={post.data.published_at.toISOString()}>{formatDate(post.data.published_at)}</time>}
+      {post.data.author && <span>By {post.data.author}</span>}
+    </div>
     <h1>{post.data.title}</h1>
-    {post.data.published_at && <time datetime={post.data.published_at.toISOString()}>{post.data.published_at.toLocaleDateString()}</time>}
-    {post.data.featured_image && (
-      <img class="content-featured-image" src={post.data.featured_image} alt={post.data.featured_image_alt ?? ''} loading="eager" decoding="async" />
-    )}
+    {post.data.excerpt && <p class="article-intro">{post.data.excerpt}</p>}
+    {post.data.featured_image && <img class="content-featured-image" src={post.data.featured_image} alt={post.data.featured_image_alt ?? ''} loading="eager" fetchpriority="high" decoding="async" />}
     <Content />
   </article>
 </BaseLayout>
