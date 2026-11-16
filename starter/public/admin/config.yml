@@ -1,5 +1,4 @@
-# This repository hosts the Astro starter in /starter.
-# root_dir makes Sveltia paths relative to that directory.
+# Astro starter lives in /starter; Sveltia paths are relative to that directory.
 backend:
   name: github
   repo: santonsujarwo/bangsal
@@ -8,7 +7,6 @@ backend:
 
 media_folder: /public/uploads
 public_folder: /uploads
-
 publish_mode: preview
 
 collections:
@@ -66,17 +64,29 @@ collections:
     slug: '{{slug}}'
     preview_path: '/{{slug}}/'
     fields:
-      - { label: Title, name: title, widget: string }
-      - { label: Description, name: description, widget: text, required: false }
-      - label: Template
+      - { label: Page Title, name: title, widget: string }
+      - { label: Page Description, name: description, widget: text, required: false, hint: 'Short summary of this page. Used as a fallback for search and social descriptions.' }
+      - label: Page Template
         name: template
         widget: select
-        options: [default, landing]
+        options:
+          - { label: 'Default — shared header and footer', value: default }
+          - { label: 'Landing — no shared header or footer', value: landing }
         default: default
-      - label: Sections
+        hint: 'Default is for standard website pages. Landing is for focused campaign pages.'
+      - label: Content Editor
+        name: content_mode
+        widget: select
+        options:
+          - { label: 'Block Builder', value: blocks }
+          - { label: 'Classic Content Editor', value: classic }
+        default: blocks
+        hint: 'Choose one editor. Only the fields for the selected editor are shown.'
+      - label: Sections — Block Builder
         name: sections
         widget: list
         required: false
+        condition: { field: content_mode, value: blocks }
         fields:
           - label: Section Type
             name: type
@@ -96,13 +106,21 @@ collections:
             fields:
               - { label: Item Title, name: title, widget: string }
               - { label: Item Description, name: body, widget: text, required: false }
-      - { label: Draft, name: draft, widget: boolean, default: false }
-      - { label: SEO Title, name: seo_title, widget: string, required: false }
-      - { label: SEO Description, name: seo_description, widget: text, required: false }
-      - { label: Canonical URL, name: canonical_url, widget: string, required: false }
-      - { label: Open Graph Image, name: og_image, widget: image, required: false }
-      - { label: No Index, name: noindex, widget: boolean, default: false }
-      - { label: Body, name: body, widget: markdown }
+      - label: Classic Content Editor
+        name: body
+        widget: markdown
+        required: false
+        condition: { field: content_mode, value: classic }
+      - label: SEO Settings
+        name: seo
+        widget: object
+        collapsed: true
+        fields:
+          - { label: SEO Title, name: title, widget: string, required: false }
+          - { label: SEO Description, name: description, widget: text, required: false }
+          - { label: Canonical URL, name: canonical_url, widget: string, required: false }
+          - { label: Open Graph Image, name: og_image, widget: image, required: false }
+          - { label: No Index, name: noindex, widget: boolean, default: false }
 
   - name: services
     publish_mode:
@@ -122,12 +140,16 @@ collections:
       - { label: Featured Image Alt, name: featured_image_alt, widget: string, required: false }
       - { label: Sort Order, name: sort_order, widget: number, default: 0, value_type: int }
       - { label: Featured, name: featured, widget: boolean, default: false }
-      - { label: Draft, name: draft, widget: boolean, default: false }
-      - { label: SEO Title, name: seo_title, widget: string, required: false }
-      - { label: SEO Description, name: seo_description, widget: text, required: false }
-      - { label: Canonical URL, name: canonical_url, widget: string, required: false }
-      - { label: Open Graph Image, name: og_image, widget: image, required: false }
-      - { label: No Index, name: noindex, widget: boolean, default: false }
+      - label: SEO Settings
+        name: seo
+        widget: object
+        collapsed: true
+        fields:
+          - { label: SEO Title, name: title, widget: string, required: false }
+          - { label: SEO Description, name: description, widget: text, required: false }
+          - { label: Canonical URL, name: canonical_url, widget: string, required: false }
+          - { label: Open Graph Image, name: og_image, widget: image, required: false }
+          - { label: No Index, name: noindex, widget: boolean, default: false }
       - { label: Body, name: body, widget: markdown }
 
   - name: posts
@@ -151,10 +173,14 @@ collections:
       - { label: Featured Image Alt, name: featured_image_alt, widget: string, required: false }
       - { label: Category, name: category, widget: string, required: false }
       - { label: Tags, name: tags, widget: list, required: false }
-      - { label: Draft, name: draft, widget: boolean, default: true }
-      - { label: SEO Title, name: seo_title, widget: string, required: false }
-      - { label: SEO Description, name: seo_description, widget: text, required: false }
-      - { label: Canonical URL, name: canonical_url, widget: string, required: false }
-      - { label: Open Graph Image, name: og_image, widget: image, required: false }
-      - { label: No Index, name: noindex, widget: boolean, default: false }
+      - label: SEO Settings
+        name: seo
+        widget: object
+        collapsed: true
+        fields:
+          - { label: SEO Title, name: title, widget: string, required: false }
+          - { label: SEO Description, name: description, widget: text, required: false }
+          - { label: Canonical URL, name: canonical_url, widget: string, required: false }
+          - { label: Open Graph Image, name: og_image, widget: image, required: false }
+          - { label: No Index, name: noindex, widget: boolean, default: false }
       - { label: Body, name: body, widget: markdown }
