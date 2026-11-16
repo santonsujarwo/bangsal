@@ -27,6 +27,39 @@ const sharedSeoFields = {
   noindex: z.boolean().default(false),
 };
 
+/**
+ * Sveltia's optional datetime widget may persist an empty value as an empty
+ * string (or an empty object in older saved entries). Normalize those values
+ * to undefined before Astro/Zod validates the date. Valid Date instances and
+ * parseable strings/numbers are converted to Date; invalid non-empty values
+ * are deliberately left for Zod to reject.
+ */
+const optionalCmsDate = z.preprocess((value) => {
+  if (value === undefined || value === null) return undefined;
+  if (typeof value === 'string' && value.trim() === '') return undefined;
+
+  if (value instanceof Date) return value;
+
+  if (typeof value === 'string' || typeof value === 'number') {
+    const parsed = new Date(value);
+    return Number.isNaN(parsed.getTime()) ? value : parsed;
+  }
+
+  if (typeof value === 'object') {
+    const keys = Object.keys(value);
+    if (keys.length === 0) return undefined;
+
+    const candidate = value.value ?? value.date ?? value.datetime ?? value.iso;
+    if (candidate instanceof Date) return candidate;
+    if (typeof candidate === 'string' || typeof candidate === 'number') {
+      const parsed = new Date(candidate);
+      return Number.isNaN(parsed.getTime()) ? value : parsed;
+    }
+  }
+
+  return value;
+}, z.date().optional());
+
 const pages = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/pages' }),
   schema: z.object({
@@ -59,8 +92,8 @@ const posts = defineCollection({
     title: z.string(),
     excerpt: z.string().optional(),
     author: z.string().optional(),
-    published_at: z.coerce.date().optional(),
-    updated_at: z.coerce.date().optional(),
+    published_at: optionalCmsDate,
+    updated_at: optionalCmsDate,
     featured_image: z.string().optional(),
     featured_image_alt: z.string().optional(),
     category: z.string().optional(),
