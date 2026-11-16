@@ -68,7 +68,9 @@ const PagePreview = createClass({
     if (mode === 'classic') {
       const classicBody = isObjectEditor ? editor.get('body') : entry.getIn(['data', 'body']);
       content = h('article', { className: 'preview-body preview-classic-content' },
-        classicBody ? widgetFor('content_mode.classic.body') : h('p', { className: 'preview-placeholder' }, 'Add your page content in the Classic Content Editor.')
+        h('h1', {}, title),
+        description ? h('p', { className: 'preview-lead' }, description) : null,
+        classicBody ? widgetFor('content_mode.body') : h('p', { className: 'preview-placeholder' }, 'Add your page content in the Classic Content Editor.')
       );
     } else {
       const sections = isObjectEditor ? editor.get('sections') : entry.getIn(['data', 'sections']);
