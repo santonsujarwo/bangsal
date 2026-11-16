@@ -1,29 +1,19 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageSections from '../components/PageSections.astro';
-import { getCollection, render } from 'astro:content';
-
+import { getCollection } from 'astro:content';
+import { marked } from 'marked';
 export async function getStaticPaths() {
-  const reservedSlugs = new Set(['about', 'contact', 'blog', 'services', 'admin', '404']);
-  const pages = await getCollection('pages', ({ id }) => !reservedSlugs.has(id));
-  return pages.map((page) => ({ params: { slug: page.id }, props: { page } }));
+ const reservedSlugs = new Set(['about','contact','blog','services','admin','404']);
+ const pages = await getCollection('pages', ({ id }) => !reservedSlugs.has(id));
+ return pages.map(page => ({ params: { slug: page.id }, props: { page } }));
 }
-
 const { page } = Astro.props;
-const { Content } = await render(page);
 const seo = page.data.seo;
+const editor = page.data.content_mode;
+const mode = typeof editor === 'string' ? editor : (editor?.type ?? 'block_builder');
+const sections = editor?.sections ?? page.data.sections ?? [];
 ---
-<BaseLayout
-  title={seo?.title ?? page.data.seo_title ?? page.data.title}
-  description={seo?.description ?? page.data.seo_description ?? page.data.description}
-  canonicalUrl={seo?.canonical_url ?? page.data.canonical_url}
-  ogImage={seo?.og_image ?? page.data.og_image}
-  noindex={seo?.noindex ?? page.data.noindex}
-  template={page.data.template}
->
-  <main>
-    {page.data.content_mode === 'classic'
-      ? <article class="page-body"><Content /></article>
-      : <PageSections sections={page.data.sections} />}
-  </main>
+<BaseLayout title={seo?.title ?? page.data.seo_title ?? page.data.title} description={seo?.description ?? page.data.seo_description ?? page.data.description} canonicalUrl={seo?.canonical_url ?? page.data.canonical_url} ogImage={seo?.og_image ?? page.data.og_image} noindex={seo?.noindex ?? page.data.noindex} template={page.data.template}>
+<main>{mode === 'classic' ? <article class="page-body" set:html={marked.parse(editor?.body ?? '')} /> : <PageSections sections={sections} />}</main>
 </BaseLayout>
