@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { readdirSync, readFileSync, statSync } from 'node:fs';
-import { join, relative, sep } from 'node:path';
+import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const distDirectory = fileURLToPath(new URL('../dist/', import.meta.url));
@@ -25,9 +25,6 @@ function exists(relativePath) {
 const files = walk(distDirectory);
 const htmlFiles = files.filter((file) => file.endsWith('.html'));
 const cssFiles = files.filter((file) => file.endsWith('.css'));
-const relativeFiles = new Set(
-  files.map((file) => relative(distDirectory, file).split(sep).join('/')),
-);
 
 assert.ok(exists('index.html'), 'The production homepage must be generated.');
 assert.ok(htmlFiles.length > 0, 'At least one HTML page must be generated.');
@@ -42,12 +39,16 @@ for (const file of htmlFiles) {
   const html = readFileSync(file, 'utf8');
   const page = relative(distDirectory, file);
 
-  assert.match(html, /<!doctype html>/i, `Missing doctype in ${page}.`);
-  assert.match(html, /<html\\b[^>]*\\blang=/i, `Missing document language in ${page}.`);
-  assert.match(html, /<title>[^<]+<\\/title>/i, `Missing page title in ${page}.`);
-  assert.match(html, /<link\\b[^>]*\\brel=["']canonical["']/i, `Missing canonical URL in ${page}.`);
+  assert.match(html, /<!doctype html>/i, \`Missing doctype in \${page}.\`);
+  assert.match(html, /<html\b[^>]*\blang=/i, \`Missing document language in \${page}.\`);
+  assert.match(html, /<title>[^<]+<\/title>/i, \`Missing page title in \${page}.\`);
+  assert.match(
+    html,
+    /<link\b[^>]*\brel=["']canonical["']/i,
+    \`Missing canonical URL in \${page}.\`,
+  );
 }
 
 console.log(
-  `Build QA passed: ${htmlFiles.length} HTML page(s), ${cssFiles.length} CSS asset(s), robots.txt, and sitemap.`,
+  \`Build QA passed: \${htmlFiles.length} HTML page(s), \${cssFiles.length} CSS asset(s), robots.txt, and sitemap.\`,
 );
