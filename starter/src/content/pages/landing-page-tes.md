@@ -2,6 +2,7 @@
 title: landing page tes
 description: landing page tes
 template: landing
+content_mode: classic
 sections: []
 seo:
   title: ''
@@ -9,8 +10,6 @@ seo:
   canonical_url: ''
   og_image: ''
   noindex: false
-content_mode:
-  type: classic
-  body: |
-    tes classic editor
 ---
+
+apa ini loremm upsu dolor sit amet
