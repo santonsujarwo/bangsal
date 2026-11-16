@@ -44,6 +44,24 @@ The CMS collection entries define `preview_path` values. A real preview requires
 
 Sveltia stores uploaded media in `starter/public/uploads/` and writes public URLs beginning with `/uploads/`. Keep this path consistent with the Astro public directory.
 
+## Page editing
+
+The Pages collection supports two templates:
+
+- **Default** — renders the shared site header and footer around the page content.
+- **Landing** — renders the page without the shared header and footer, and lets the page sections use the full main-content width. Use this for campaign or focused conversion pages.
+
+The Home, About, and Contact routes read their matching Pages entries. The homepage renders both structured Sections and the Markdown Body. About and Contact render both as well. A page marked Draft is not exposed on its public route; dynamic pages are omitted from static generation, and About/Contact redirect to the 404 route. A draft Home entry is replaced with a non-indexable unpublished notice until it is published.
+
+## Listing page settings
+
+Open **Site Settings → General** to edit:
+
+- Blog Page Title and Blog Page Description
+- Services Page Title and Services Page Description
+
+These values control both the visible heading/intro copy and the page title/description metadata. If left empty, the site uses the built-in defaults.
+
 ## Content editing and deletion workflow
 
 Pages, Services, and Blog Posts use Sveltia's Editorial Workflow with a single **Draft** stage. This keeps the process short while retaining a safe publish step:
