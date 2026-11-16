@@ -57,30 +57,22 @@ const renderSection = (section, index, getAsset) => {
 
 const PagePreview = createClass({
   render: function () {
-    const { entry, getAsset } = this.props;
+    const { entry, getAsset, widgetFor } = this.props;
     const title = entry.getIn(['data', 'title']) || 'Untitled page';
     const description = entry.getIn(['data', 'description']);
     const editor = entry.getIn(['data', 'content_mode']);
     const isObjectEditor = editor && typeof editor.get === 'function';
     const mode = isObjectEditor ? (editor.get('type') || 'block_builder') : (editor || 'block_builder');
-    const sections = isObjectEditor ? editor.get('sections') : entry.getIn(['data', 'sections']);
-    const sectionData = sections && sections.toJS ? sections.toJS() : [];
-    const classicBody = (isObjectEditor ? editor.get('body') : null)
-      || entry.getIn(['data', 'body'])
-      || '';
+
     let content;
     if (mode === 'classic') {
-      const blocks = String(classicBody).trim().split(/\\n\\s*\\n/).filter(Boolean);
-      content = [h('article', { className: 'preview-body preview-classic-content', key: 'body' },
-        blocks.length
-          ? blocks.map((block, index) => {
-              const heading = block.match(/^(#{1,6})\\s+(.+)$/);
-              if (heading) return h(`h${heading[1].length}`, { key: index }, heading[2]);
-              return h('p', { key: index }, block.replace(/\\n/g, ' '));
-            })
-          : h('p', { className: 'preview-placeholder' }, 'Add your page content in the Classic Content Editor.')
-      )];
+      const classicBody = isObjectEditor ? editor.get('body') : entry.getIn(['data', 'body']);
+      content = h('article', { className: 'preview-body preview-classic-content' },
+        classicBody ? widgetFor('content_mode.classic.body') : h('p', { className: 'preview-placeholder' }, 'Add your page content in the Classic Content Editor.')
+      );
     } else {
+      const sections = isObjectEditor ? editor.get('sections') : entry.getIn(['data', 'sections']);
+      const sectionData = sections && sections.toJS ? sections.toJS() : [];
       content = [
         ...(sectionData.length === 0
           ? [h('div', { className: 'preview-page-heading', key: 'heading' }, h('h1', {}, title), description ? h('p', {}, description) : null)]
@@ -88,10 +80,9 @@ const PagePreview = createClass({
         ...sectionData.map((section, index) => renderSection(section, index, getAsset))
       ];
     }
-    return PreviewShell(content);
+    return PreviewShell(Array.isArray(content) ? content : [content]);
   }
 });
-
 const ServicePreview = createClass({
   render: function () {
     const { entry, getAsset, widgetFor } = this.props;
