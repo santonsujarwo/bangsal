@@ -28,7 +28,7 @@ const articleSchema = {
 ---
 <BaseLayout
   title={seo?.title ?? post.data.seo_title ?? post.data.title}
-  description={post.data.seo_description ?? post.data.excerpt}
+  description={seo?.description ?? post.data.seo_description ?? post.data.excerpt}
   canonicalUrl={seo?.canonical_url ?? post.data.canonical_url}
   ogImage={seo?.og_image ?? post.data.og_image ?? post.data.featured_image}
   ogType="article"
