@@ -57,7 +57,7 @@ const renderSection = (section, index, getAsset) => {
 
 const PagePreview = createClass({
   render: function () {
-    const { entry, getAsset, widgetFor } = this.props;
+    const { entry, getAsset } = this.props;
     const title = entry.getIn(['data', 'title']) || 'Untitled page';
     const description = entry.getIn(['data', 'description']);
     const mode = entry.getIn(['data', 'content_mode', 'type']) || 'block_builder';
@@ -69,7 +69,7 @@ const PagePreview = createClass({
         : []),
       ...(mode === 'block_builder'
         ? sectionData.map((section, index) => renderSection(section, index, getAsset))
-        : [h('article', { className: 'preview-body', key: 'body' }, widgetFor('body'))])
+        : [h('article', { className: 'preview-body', key: 'body' }, entry.getIn(['data', 'content_mode', 'body']) || 'Add your page content in the Classic Content Editor.')])
     ];
     return PreviewShell(content);
   }
