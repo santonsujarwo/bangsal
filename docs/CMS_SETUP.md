@@ -64,11 +64,11 @@ These values control both the visible heading/intro copy and the page title/desc
 
 ## Content editing and deletion workflow
 
-Pages, Services, and Blog Posts use Sveltia's Editorial Workflow with a single **Draft** stage. This keeps the process short while retaining a safe publish step:
+Pages, Services, and Blog Posts use Sveltia's Editorial Workflow with a single **Draft** workflow stage. The separate **Draft** boolean field has been removed from the content forms because saving is already available in the editor toolbar. The workflow stage is retained to manage publication safely:
 
 1. Choose **New** in the collection and create the entry.
-2. Save it as a draft. It appears in the CMS workflow board under Draft.
-3. Open the draft and choose **Publish Entry** when it is ready. The resulting pull request is merged to `main` after the configured checks pass.
+2. Use **Save** in the editor toolbar to save changes. The entry is managed in the Draft workflow stage until publication.
+3. Open the entry and choose **Publish Entry** when it is ready. The resulting pull request is merged to `main` after the configured checks pass.
 
 To remove a published entry:
 

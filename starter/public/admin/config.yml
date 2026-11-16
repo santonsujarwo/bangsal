@@ -96,7 +96,6 @@ collections:
             fields:
               - { label: Item Title, name: title, widget: string }
               - { label: Item Description, name: body, widget: text, required: false }
-      - { label: Draft, name: draft, widget: boolean, default: false }
       - { label: SEO Title, name: seo_title, widget: string, required: false }
       - { label: SEO Description, name: seo_description, widget: text, required: false }
       - { label: Canonical URL, name: canonical_url, widget: string, required: false }
@@ -151,7 +150,6 @@ collections:
       - { label: Featured Image Alt, name: featured_image_alt, widget: string, required: false }
       - { label: Category, name: category, widget: string, required: false }
       - { label: Tags, name: tags, widget: list, required: false }
-      - { label: Draft, name: draft, widget: boolean, default: true }
       - { label: SEO Title, name: seo_title, widget: string, required: false }
       - { label: SEO Description, name: seo_description, widget: text, required: false }
       - { label: Canonical URL, name: canonical_url, widget: string, required: false }
