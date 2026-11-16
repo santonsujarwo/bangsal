@@ -7,6 +7,7 @@ const entry = await getEntry('pages', 'contact');
 if (!entry) return Astro.redirect('/404/');
 const { Content } = await render(entry);
 const seo = entry.data.seo;
+const sections = entry.data.sections ?? [];
 ---
 <BaseLayout
   title={seo?.title ?? entry.data.seo_title ?? entry.data.title}
@@ -19,6 +20,8 @@ const seo = entry.data.seo;
   <main>
     {entry.data.content_mode === 'classic'
       ? <article class="page-body"><Content /></article>
-      : <PageSections sections={entry.data.sections} />}
+      : sections.length > 0
+        ? <PageSections sections={sections} />
+        : <section class="content-section"><div class="section-inner"><h1>{entry.data.title}</h1>{entry.data.description && <p>{entry.data.description}</p>}</div></section>}
   </main>
 </BaseLayout>
