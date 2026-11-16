@@ -2,8 +2,7 @@
 title: Building Better Spaces
 description: A construction company website demo for residential, commercial, and renovation projects.
 template: default
-sections:
-  - type: hero
+
     eyebrow: CONSTRUCTION · RENOVATION · PROJECT MANAGEMENT
     heading: Build with clarity. Create with confidence.
     body: From the first sketch to the final handover, BinaKarya brings planning, craftsmanship, and practical project coordination together to shape spaces that work beautifully.
@@ -67,5 +66,8 @@ seo_description: Explore residential construction, commercial building, renovati
 canonical_url: /
 og_image: https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1200&q=85
 noindex: false
+content_mode:
+  type: block_builder
+  sections:
+    - type: hero
 ---
-

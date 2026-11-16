@@ -2,8 +2,7 @@
 title: Selected Projects
 description: Sample residential, commercial, and renovation project types for the construction website demo.
 template: default
-sections:
-  - type: hero
+
     eyebrow: PROJECT PORTFOLIO
     heading: Different briefs. Thoughtful solutions.
     body: Explore sample project categories that demonstrate how a construction company can present its work. These are illustrative examples, not completed or verified client projects.
@@ -34,5 +33,8 @@ seo_description: Browse illustrative residential, commercial, and renovation pro
 canonical_url: /portfolio/
 og_image: https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=1200&q=85
 noindex: false
+content_mode:
+  type: block_builder
+  sections:
+    - type: hero
 ---
-

@@ -2,8 +2,7 @@
 title: About BinaKarya
 description: A sample company profile explaining the values and process behind a construction team.
 template: default
-sections:
-  - type: hero
+
     eyebrow: ABOUT BINAKARYA
     heading: Thoughtful building starts with understanding.
     body: BinaKarya Construction is a fictional company created to demonstrate a modern construction website. Its story, services, and process are sample content that can be replaced with verified business information.
@@ -32,5 +31,8 @@ seo_description: Learn about the sample construction company, its project approa
 canonical_url: /about/
 og_image: https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=85
 noindex: false
+content_mode:
+  type: block_builder
+  sections:
+    - type: hero
 ---
-

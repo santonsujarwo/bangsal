@@ -76,41 +76,44 @@ collections:
         hint: 'Default is for standard website pages. Landing is for focused campaign pages.'
       - label: Content Editor
         name: content_mode
-        widget: select
-        options:
-          - { label: 'Block Builder', value: blocks }
-          - { label: 'Classic Content Editor', value: classic }
-        default: blocks
-        hint: 'Choose one editor. Only the fields for the selected editor are shown.'
-      - label: Sections — Block Builder
-        name: sections
-        widget: list
-        required: false
-        condition: { field: content_mode, value: blocks }
-        fields:
-          - label: Section Type
-            name: type
-            widget: select
-            options: [hero, rich_text, image_text, feature_grid, cta, faq]
-          - { label: Eyebrow, name: eyebrow, widget: string, required: false }
-          - { label: Heading, name: heading, widget: string, required: false }
-          - { label: Body, name: body, widget: text, required: false }
-          - { label: Image, name: image, widget: image, required: false }
-          - { label: Image Alt, name: image_alt, widget: string, required: false }
-          - { label: Button Label, name: button_label, widget: string, required: false }
-          - { label: Button URL, name: button_url, widget: string, required: false }
-          - label: Items
-            name: items
-            widget: list
-            required: false
+        widget: object
+        typeKey: type
+        required: true
+        default: { type: block_builder }
+        hint: 'Select one editor. Only the selected editor fields are displayed.'
+        types:
+          - name: block_builder
+            label: Block Builder
+            widget: object
             fields:
-              - { label: Item Title, name: title, widget: string }
-              - { label: Item Description, name: body, widget: text, required: false }
-      - label: Classic Content Editor
-        name: body
-        widget: markdown
-        required: false
-        condition: { field: content_mode, value: classic }
+              - label: Sections — Block Builder
+                name: sections
+                widget: list
+                required: false
+                fields:
+                  - label: Section Type
+                    name: type
+                    widget: select
+                    options: [hero, rich_text, image_text, feature_grid, cta, faq]
+                  - { label: Eyebrow, name: eyebrow, widget: string, required: false }
+                  - { label: Heading, name: heading, widget: string, required: false }
+                  - { label: Body, name: body, widget: text, required: false }
+                  - { label: Image, name: image, widget: image, required: false }
+                  - { label: Image Alt, name: image_alt, widget: string, required: false }
+                  - { label: Button Label, name: button_label, widget: string, required: false }
+                  - { label: Button URL, name: button_url, widget: string, required: false }
+                  - label: Items
+                    name: items
+                    widget: list
+                    required: false
+                    fields:
+                      - { label: Item Title, name: title, widget: string }
+                      - { label: Item Description, name: body, widget: text, required: false }
+          - name: classic
+            label: Classic Content Editor
+            widget: object
+            fields:
+              - { label: Content, name: body, widget: markdown, required: false }
       - label: SEO Settings
         name: seo
         widget: object

@@ -2,8 +2,7 @@
 title: Contact BinaKarya
 description: Get in touch to discuss a construction, renovation, or commercial project.
 template: default
-sections:
-  - type: hero
+
     eyebrow: CONTACT
     heading: Tell us a little about your project.
     body: Use this sample contact page to show visitors how to start a project conversation. Replace the demo contact details with verified business channels before launch.
@@ -29,5 +28,8 @@ seo_description: Contact the BinaKarya Construction website demo to explore a sa
 canonical_url: /contact/
 og_image: https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=85
 noindex: false
+content_mode:
+  type: block_builder
+  sections:
+    - type: hero
 ---
-
