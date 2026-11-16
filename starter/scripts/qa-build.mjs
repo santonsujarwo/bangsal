@@ -39,16 +39,20 @@ for (const file of htmlFiles) {
   const html = readFileSync(file, 'utf8');
   const page = relative(distDirectory, file);
 
-  assert.match(html, /<!doctype html>/i, \`Missing doctype in \${page}.\`);
-  assert.match(html, /<html\b[^>]*\blang=/i, \`Missing document language in \${page}.\`);
-  assert.match(html, /<title>[^<]+<\/title>/i, \`Missing page title in \${page}.\`);
+  assert.match(html, /<!doctype html>/i, 'Missing doctype in ' + page + '.');
+  assert.match(html, /<html\b[^>]*\blang=/i, 'Missing document language in ' + page + '.');
+  assert.match(html, /<title>[^<]+<\/title>/i, 'Missing page title in ' + page + '.');
   assert.match(
     html,
     /<link\b[^>]*\brel=["']canonical["']/i,
-    \`Missing canonical URL in \${page}.\`,
+    'Missing canonical URL in ' + page + '.',
   );
 }
 
 console.log(
-  \`Build QA passed: \${htmlFiles.length} HTML page(s), \${cssFiles.length} CSS asset(s), robots.txt, and sitemap.\`,
+  'Build QA passed: ' +
+    htmlFiles.length +
+    ' HTML page(s), ' +
+    cssFiles.length +
+    ' CSS asset(s), robots.txt, and sitemap.',
 );
