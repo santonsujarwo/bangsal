@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('posts', ({ data }) => !data.draft);
+  const posts = await getCollection('posts');
   return posts.map((post) => ({
     params: { slug: post.id },
     props: { post },
@@ -13,11 +13,12 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 const siteUrl = Astro.site ?? new URL('https://example.com');
+const seo = post.data.seo;
 const articleSchema = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
   headline: post.data.title,
-  description: post.data.seo_description ?? post.data.excerpt,
+  description: seo?.description ?? post.data.seo_description ?? post.data.excerpt,
   ...(post.data.featured_image ? { image: new URL(post.data.featured_image, siteUrl).href } : {}),
   ...(post.data.author ? { author: { '@type': 'Person', name: post.data.author } } : {}),
   ...(post.data.published_at ? { datePublished: post.data.published_at.toISOString() } : {}),
@@ -26,12 +27,12 @@ const articleSchema = {
 };
 ---
 <BaseLayout
-  title={post.data.seo_title ?? post.data.title}
-  description={post.data.seo_description ?? post.data.excerpt}
-  canonicalUrl={post.data.canonical_url}
-  ogImage={post.data.og_image ?? post.data.featured_image}
+  title={seo?.title ?? post.data.seo_title ?? post.data.title}
+  description={seo?.description ?? post.data.seo_description ?? post.data.excerpt}
+  canonicalUrl={seo?.canonical_url ?? post.data.canonical_url}
+  ogImage={seo?.og_image ?? post.data.og_image ?? post.data.featured_image}
   ogType="article"
-  noindex={post.data.noindex}
+  noindex={seo?.noindex ?? post.data.noindex}
   structuredData={articleSchema}
 >
   <article class="preview-article">

@@ -1,6 +1,6 @@
 # Sveltia CMS setup
 
-The Astro starter lives in the `starter/` subdirectory of this repository. The CMS configuration uses `backend.root_dir: starter`, so collection and media paths are relative to that directory.
+The Astro starter lives in the `starter/` subdirectory. Sveltia uses `backend.root_dir: starter`, so collection and media paths are relative to that directory.
 
 ## Repository and deployment
 
@@ -10,72 +10,59 @@ The Astro starter lives in the `starter/` subdirectory of this repository. The C
 - Content root: `starter/src/content/`
 - Media root: `starter/public/uploads/`
 
-If you copy the starter into a new repository where the Astro project is at the repository root, remove `backend.root_dir` from `public/admin/config.yml` and replace the repository name.
-
 ## Authentication
 
-### Personal Access Token (initial single-editor setup)
+For a single trusted editor, sign in with a GitHub account that has Write access and provide a fine-grained PAT limited to this repository with Contents and Pull requests read/write permissions. Never commit the token.
 
-1. Sign in with a GitHub account that has **Write** access to the repository.
-2. Open `/admin/` and choose the GitHub backend.
-3. When prompted, provide a fine-grained GitHub Personal Access Token restricted to this repository with **Contents: Read and write** and **Pull requests: Read and write** permissions.
-4. Do not place the token in this repository, source code, environment examples, or a committed config file.
-
-A PAT is a practical bootstrap path for a single trusted editor. It is not a shared credential and should be rotated/revoked from GitHub when no longer needed.
-
-### Multi-editor / client production setup
-
-For a client-facing or multi-editor deployment, use a GitHub App with the Sveltia CMS Authenticator on Cloudflare Workers:
-
-- Authenticator project: https://github.com/sveltia/sveltia-cms-auth
-- Create a GitHub App limited to the target repository.
-- Grant only the repository permissions required to read and write content.
-- Deploy the authenticator to Cloudflare Workers and configure the GitHub OAuth callback URL exactly as required by the authenticator documentation.
-- Configure the Sveltia GitHub backend OAuth endpoint according to the deployed authenticator's current setup guide.
-- Store GitHub App private keys and OAuth secrets only as Cloudflare Worker secrets. Never commit them.
-
-The authenticator is an external deployment prerequisite; this repository does not contain credentials or pretend that OAuth is already provisioned.
-
-## Preview
-
-The CMS collection entries define `preview_path` values. A real preview requires the corresponding Astro preview/deployment URL to be available. Local development preview is available by running the Astro dev server from `starter/`; production preview links become useful after the site is deployed.
-
-## Media
-
-Sveltia stores uploaded media in `starter/public/uploads/` and writes public URLs beginning with `/uploads/`. Keep this path consistent with the Astro public directory.
+For client-facing or multi-editor deployments, use a GitHub App with the Sveltia CMS Authenticator on Cloudflare Workers. Store private keys and OAuth secrets only as Worker secrets.
 
 ## Page editing
 
-The Pages collection supports two templates:
+### Page Information
+- **Page Title** is the visible page heading/title.
+- **Page Description** is a short page summary and fallback description for search/social metadata.
+- **Page Template — Default** includes the shared site header and footer.
+- **Page Template — Landing** omits the shared header/footer for focused campaign pages.
 
-- **Default** — renders the shared site header and footer around the page content.
-- **Landing** — renders the page without the shared header and footer, and lets the page sections use the full main-content width. Use this for campaign or focused conversion pages.
+### Content Editor
 
-The Home, About, and Contact routes read their matching Pages entries. The homepage renders both structured Sections and the Markdown Body. About and Contact render both as well. A page marked Draft is not exposed on its public route; dynamic pages are omitted from static generation, and About/Contact redirect to the 404 route. A draft Home entry is replaced with a non-indexable unpublished notice until it is published.
+Choose exactly one mode using **Content Editor**:
+
+- **Block Builder** displays the Sections field. Build a page from Hero, Rich Text, Image Text, Feature Grid, CTA, and FAQ sections.
+- **Classic Content Editor** displays the Markdown/Rich Text Body field for writing a page as one continuous document.
+
+Only the selected editor is rendered on the public page and in the CMS preview. Switching modes does not delete the content stored in the other mode, so switching back can recover it. Review the selected mode before publishing.
+
+Existing pages without a `content_mode` value default to **Block Builder**, preserving the existing section-based pages.
+
+### SEO Settings
+
+SEO fields are grouped in the collapsible **SEO Settings** panel at the bottom of the page form:
+
+- SEO Title
+- SEO Description
+- Canonical URL
+- Open Graph Image
+- No Index
+
+Older content that still uses the previous flat SEO frontmatter remains supported. Newly edited entries use the grouped SEO object.
 
 ## Listing page settings
 
-Open **Site Settings → General** to edit:
+Open **Site Settings → General** to edit Blog Page Title/Description and Services Page Title/Description. These control visible listing copy and page metadata.
 
-- Blog Page Title and Blog Page Description
-- Services Page Title and Services Page Description
+## Publication workflow
 
-These values control both the visible heading/intro copy and the page title/description metadata. If left empty, the site uses the built-in defaults.
+Pages, Services, and Blog Posts use Sveltia Editorial Workflow with one Draft stage. Publication state is managed by the workflow; there is no separate Draft boolean field in the editor.
 
-## Content editing and deletion workflow
+1. Create an entry and save it.
+2. It remains in the Draft workflow stage until ready.
+3. Choose **Publish Entry** to publish. The resulting change is submitted as a pull request and merged to `main` after configured checks pass.
 
-Pages, Services, and Blog Posts use Sveltia's Editorial Workflow with a single **Draft** stage. This keeps the process short while retaining a safe publish step:
+To remove a published entry, choose **Delete Entry** from the editor menu. Sveltia stages deletion through a pull request so it can be finalized or canceled.
 
-1. Choose **New** in the collection and create the entry.
-2. Save it as a draft. It appears in the CMS workflow board under Draft.
-3. Open the draft and choose **Publish Entry** when it is ready. The resulting pull request is merged to `main` after the configured checks pass.
+## Preview and media
 
-To remove a published entry:
+Collection entries define `preview_path` values. Preview links require a corresponding Astro deployment to be available. Sveltia stores uploads in `starter/public/uploads/` and writes public URLs beginning with `/uploads/`.
 
-1. Open the entry in its editor and choose **Delete Entry** from the three-dot menu.
-2. Sveltia opens a deletion pull request. The entry remains on the live site and is marked **Pending Deletion** until the deletion is finalized.
-3. In the Editorial Workflow page, choose **Delete** to complete the removal, or **Cancel** to keep the entry.
-
-A pending deletion is not a normal draft and does not move through the Draft stage. This is intentional: deleting a published entry is staged as a pull request, so it can be canceled before it is merged. Do not delete the CMS-generated pull request manually if you want to retain this workflow.
-
-Site Settings remains on Preview Workflow and is not changed by these collection-level settings.
+The deployed Astro page remains the source of truth for responsive and production QA.
