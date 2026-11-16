@@ -18,7 +18,7 @@ interface Props { sections?: Section[] }
 const { sections = [] } = Astro.props;
 ---
 {sections.map((section, index) => (
-  <section class:list={['content-section', `section-${section.type}', section.type === 'hero' && section.image ? 'section-has-image' : '']} aria-labelledby={section.heading ? `section-heading-${index}` : undefined}>
+  <section class:list={['content-section', `section-${section.type}`, section.type === 'hero' && section.image ? 'section-has-image' : '']} aria-labelledby={section.heading ? `section-heading-${index}` : undefined}>
     {section.type === 'hero' && (
       <div class="section-inner hero-layout">
         <div class="hero-copy">
