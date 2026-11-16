@@ -21,7 +21,7 @@ const isSafeHref = (value?: string) => {
 
   if (!href || /[\u0000-\u001F\u007F]/.test(href)) return false;
   if (href.startsWith('#')) return true;
-  if (href.startsWith('/') && !href.startsWith('//') && !href.startsWith('/\\\\')) return true;
+  if (href.startsWith('/') && !href.startsWith('//') && !href.startsWith('/\\')) return true;
 
   try {
     const protocol = new URL(href).protocol;
