@@ -51,6 +51,9 @@ collections:
               - { label: External Link, name: external, widget: boolean, required: false, default: false }
 
   - name: pages
+    publish_mode:
+      type: editorial_workflow
+      stages: [draft]
     label: Pages
     folder: src/content/pages
     create: true
@@ -98,6 +101,9 @@ collections:
       - { label: Body, name: body, widget: markdown }
 
   - name: services
+    publish_mode:
+      type: editorial_workflow
+      stages: [draft]
     label: Services
     folder: src/content/services
     create: true
@@ -121,6 +127,9 @@ collections:
       - { label: Body, name: body, widget: markdown }
 
   - name: posts
+    publish_mode:
+      type: editorial_workflow
+      stages: [draft]
     label: Blog Posts
     folder: src/content/posts
     create: true
