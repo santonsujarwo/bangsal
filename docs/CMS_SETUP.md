@@ -43,3 +43,21 @@ The CMS collection entries define `preview_path` values. A real preview requires
 ## Media
 
 Sveltia stores uploaded media in `starter/public/uploads/` and writes public URLs beginning with `/uploads/`. Keep this path consistent with the Astro public directory.
+
+## Content editing and deletion workflow
+
+Pages, Services, and Blog Posts use Sveltia's Editorial Workflow with a single **Draft** stage. This keeps the process short while retaining a safe publish step:
+
+1. Choose **New** in the collection and create the entry.
+2. Save it as a draft. It appears in the CMS workflow board under Draft.
+3. Open the draft and choose **Publish Entry** when it is ready. The resulting pull request is merged to `main` after the configured checks pass.
+
+To remove a published entry:
+
+1. Open the entry in its editor and choose **Delete Entry** from the three-dot menu.
+2. Sveltia opens a deletion pull request. The entry remains on the live site and is marked **Pending Deletion** until the deletion is finalized.
+3. In the Editorial Workflow page, choose **Delete** to complete the removal, or **Cancel** to keep the entry.
+
+A pending deletion is not a normal draft and does not move through the Draft stage. This is intentional: deleting a published entry is staged as a pull request, so it can be canceled before it is merged. Do not delete the CMS-generated pull request manually if you want to retain this workflow.
+
+Site Settings remains on Preview Workflow and is not changed by these collection-level settings.
