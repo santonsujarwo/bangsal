@@ -49,7 +49,8 @@ const optionalCmsDate = z.preprocess((value) => {
     const keys = Object.keys(value);
     if (keys.length === 0) return undefined;
 
-    const candidate = value.value ?? value.date ?? value.datetime ?? value.iso;
+    const record = value as Record<string, unknown>;
+    const candidate = record.value ?? record.date ?? record.datetime ?? record.iso;
     if (candidate instanceof Date) return candidate;
     if (typeof candidate === 'string' || typeof candidate === 'number') {
       const parsed = new Date(candidate);
