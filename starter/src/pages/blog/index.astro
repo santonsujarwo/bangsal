@@ -4,32 +4,37 @@ import { getCollection } from 'astro:content';
 import site from '../../data/site.json';
 
 const posts = await getCollection('posts');
-const sortedPosts = posts.sort((a, b) => {
-  const dateA = a.data.published_at?.getTime() ?? 0;
-  const dateB = b.data.published_at?.getTime() ?? 0;
-  return dateB - dateA;
-});
+const sortedPosts = posts.sort((a, b) => (b.data.published_at?.getTime() ?? 0) - (a.data.published_at?.getTime() ?? 0));
 const pageTitle = site.blog_title || 'Blog';
 const pageDescription = site.blog_description || 'News and insights.';
+const formatDate = (date?: Date) => date ? new Intl.DateTimeFormat('en', { dateStyle: 'medium' }).format(date) : '';
 ---
 <BaseLayout title={pageTitle} description={pageDescription}>
   <main>
     <header class="listing-header">
+      <p class="eyebrow">Ideas & insights</p>
       <h1>{pageTitle}</h1>
       {pageDescription && <p>{pageDescription}</p>}
     </header>
-    <div class="content-card-grid">
-      {sortedPosts.map((post) => (
-        <article class="content-card">
-          <a class="content-card-link" href={`/blog/${post.id}/`}>
-            {post.data.featured_image && <img src={post.data.featured_image} alt={post.data.featured_image_alt ?? ''} loading="lazy" decoding="async" />}
-            <div class="content-card-copy">
-              <h2>{post.data.title}</h2>
-              {post.data.excerpt && <p>{post.data.excerpt}</p>}
-            </div>
-          </a>
-        </article>
-      ))}
-    </div>
+    {sortedPosts.length ? (
+      <div class="content-card-grid">
+        {sortedPosts.map((post) => (
+          <article class="content-card">
+            <a class="content-card-link" href={`/blog/${post.id}/`} aria-label={`Read ${post.data.title}`}>
+              {post.data.featured_image && <img src={post.data.featured_image} alt={post.data.featured_image_alt ?? ''} loading="lazy" decoding="async" />}
+              <div class="content-card-copy">
+                <div class="card-meta">
+                  {post.data.category && <span>{post.data.category}</span>}
+                  {post.data.published_at && <time datetime={post.data.published_at.toISOString()}>{formatDate(post.data.published_at)}</time>}
+                </div>
+                <h2>{post.data.title}</h2>
+                {post.data.excerpt && <p>{post.data.excerpt}</p>}
+                <span class="card-read-more">Read article <span aria-hidden="true">↗</span></span>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+    ) : <div class="empty-state"><h2>Articles coming soon</h2><p>Check back for the latest updates and insights.</p></div>}
   </main>
 </BaseLayout>
