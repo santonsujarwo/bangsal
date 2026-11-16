@@ -18,6 +18,7 @@ const { Content } = await render(page);
   canonicalUrl={page.data.canonical_url}
   ogImage={page.data.og_image}
   noindex={page.data.noindex}
+  template={page.data.template}
 >
   <main>
     <PageSections sections={page.data.sections} />

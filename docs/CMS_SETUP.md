@@ -43,3 +43,39 @@ The CMS collection entries define `preview_path` values. A real preview requires
 ## Media
 
 Sveltia stores uploaded media in `starter/public/uploads/` and writes public URLs beginning with `/uploads/`. Keep this path consistent with the Astro public directory.
+
+## Page editing
+
+The Pages collection supports two templates:
+
+- **Default** — renders the shared site header and footer around the page content.
+- **Landing** — renders the page without the shared header and footer, and lets the page sections use the full main-content width. Use this for campaign or focused conversion pages.
+
+The Home, About, and Contact routes read their matching Pages entries. The homepage renders both structured Sections and the Markdown Body. About and Contact render both as well. A page marked Draft is not exposed on its public route; dynamic pages are omitted from static generation, and About/Contact redirect to the 404 route. A draft Home entry is replaced with a non-indexable unpublished notice until it is published.
+
+## Listing page settings
+
+Open **Site Settings → General** to edit:
+
+- Blog Page Title and Blog Page Description
+- Services Page Title and Services Page Description
+
+These values control both the visible heading/intro copy and the page title/description metadata. If left empty, the site uses the built-in defaults.
+
+## Content editing and deletion workflow
+
+Pages, Services, and Blog Posts use Sveltia's Editorial Workflow with a single **Draft** stage. This keeps the process short while retaining a safe publish step:
+
+1. Choose **New** in the collection and create the entry.
+2. Save it as a draft. It appears in the CMS workflow board under Draft.
+3. Open the draft and choose **Publish Entry** when it is ready. The resulting pull request is merged to `main` after the configured checks pass.
+
+To remove a published entry:
+
+1. Open the entry in its editor and choose **Delete Entry** from the three-dot menu.
+2. Sveltia opens a deletion pull request. The entry remains on the live site and is marked **Pending Deletion** until the deletion is finalized.
+3. In the Editorial Workflow page, choose **Delete** to complete the removal, or **Cancel** to keep the entry.
+
+A pending deletion is not a normal draft and does not move through the Draft stage. This is intentional: deleting a published entry is staged as a pull request, so it can be canceled before it is merged. Do not delete the CMS-generated pull request manually if you want to retain this workflow.
+
+Site Settings remains on Preview Workflow and is not changed by these collection-level settings.

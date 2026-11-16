@@ -14,5 +14,9 @@
       "url": "facebook.com"
     }
   ],
-  "footer_note": "© {year} Company Name. All rights reserved."
+  "footer_note": "© {year} Company Name. All rights reserved.",
+  "blog_title": "Blog",
+  "blog_description": "News and insights.",
+  "services_title": "Services",
+  "services_description": "Explore our services."
 }

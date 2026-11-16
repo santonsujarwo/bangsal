@@ -1,18 +1,33 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageSections from '../components/PageSections.astro';
-import { getEntry } from 'astro:content';
+import { getEntry, render } from 'astro:content';
 
 const home = await getEntry('pages', 'home');
+const isPublished = Boolean(home && !home.data.draft);
+const Content = isPublished ? (await render(home!)).Content : null;
 ---
 <BaseLayout
   title={home?.data.seo_title ?? home?.data.title ?? 'Company Name'}
   description={home?.data.seo_description ?? home?.data.description}
   canonicalUrl={home?.data.canonical_url}
   ogImage={home?.data.og_image}
-  noindex={home?.data.noindex}
+  noindex={home?.data.noindex || !isPublished}
+  template={home?.data.template}
 >
   <main>
-    {home ? <PageSections sections={home.data.sections} /> : <section><h1>Welcome</h1><p>Create a home page entry in the CMS.</p></section>}
+    {isPublished ? (
+      <>
+        <PageSections sections={home!.data.sections} />
+        {Content && <article class="page-body"><Content /></article>}
+      </>
+    ) : (
+      <section class="content-section">
+        <div class="section-inner">
+          <h1>Homepage not published</h1>
+          <p>Publish the Home page entry in the CMS to display this page.</p>
+        </div>
+      </section>
+    )}
   </main>
 </BaseLayout>

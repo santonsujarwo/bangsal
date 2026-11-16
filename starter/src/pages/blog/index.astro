@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import site from '../../data/site.json';
 
 const posts = await getCollection('posts', ({ data }) => !data.draft);
 const sortedPosts = posts.sort((a, b) => {
@@ -8,10 +9,15 @@ const sortedPosts = posts.sort((a, b) => {
   const dateB = b.data.published_at?.getTime() ?? 0;
   return dateB - dateA;
 });
+const pageTitle = site.blog_title || 'Blog';
+const pageDescription = site.blog_description || 'News and insights.';
 ---
-<BaseLayout title="Blog" description="News and insights.">
+<BaseLayout title={pageTitle} description={pageDescription}>
   <main>
-    <h1>Blog</h1>
+    <header class="listing-header">
+      <h1>{pageTitle}</h1>
+      {pageDescription && <p>{pageDescription}</p>}
+    </header>
     <div class="content-card-grid">
       {sortedPosts.map((post) => (
         <article class="content-card">

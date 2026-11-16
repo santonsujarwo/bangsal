@@ -12,6 +12,7 @@ interface Props {
   ogImage?: string;
   ogType?: 'website' | 'article';
   structuredData?: Record<string, unknown> | Record<string, unknown>[];
+  template?: 'default' | 'landing';
 }
 const {
   title,
@@ -21,7 +22,9 @@ const {
   ogImage,
   ogType = 'website',
   structuredData = [],
+  template = 'default',
 } = Astro.props;
+const isLanding = template === 'landing';
 const siteUrl = Astro.site ?? new URL('https://example.com');
 const canonical = canonicalUrl ? new URL(canonicalUrl, siteUrl) : new URL(Astro.url.pathname, siteUrl);
 const resolvedImage = ogImage || site.default_og_image;
@@ -63,9 +66,9 @@ const jsonLd = JSON.stringify([organizationSchema, ...extraSchemas]).replace(/</
     {imageUrl && <meta name="twitter:image" content={imageUrl} />}
     <script type="application/ld+json" set:html={jsonLd} />
   </head>
-  <body>
-    <SiteHeader />
+  <body class:list={['site-body', isLanding && 'site-body-landing']}>
+    {!isLanding && <SiteHeader />}
     <slot />
-    <SiteFooter />
+    {!isLanding && <SiteFooter />}
   </body>
 </html>

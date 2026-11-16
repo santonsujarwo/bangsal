@@ -4,7 +4,7 @@ import PageSections from '../components/PageSections.astro';
 import { getEntry, render } from 'astro:content';
 
 const entry = await getEntry('pages', 'about');
-if (!entry) throw new Error('Missing pages/about content entry');
+if (!entry || entry.data.draft) return Astro.redirect('/404/');
 const { Content } = await render(entry);
 ---
 <BaseLayout
@@ -13,6 +13,7 @@ const { Content } = await render(entry);
   canonicalUrl={entry.data.canonical_url}
   ogImage={entry.data.og_image}
   noindex={entry.data.noindex}
+  template={entry.data.template}
 >
   <main>
     <PageSections sections={entry.data.sections} />
