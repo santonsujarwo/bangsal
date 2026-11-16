@@ -12,6 +12,21 @@ sections:
     button_label: test hero section
     button_url: '#'
     items: []
+  - type: feature_grid
+    eyebrow: fitur grid
+    heading: ini fitur grid
+    body: ini fitur grid
+    image: /uploads/Screenshot_291.png
+    image_alt: ''
+    button_label: tes fitur grid
+    button_url: '#'
+    items:
+      - title: satu
+        body: satu
+      - title: dua
+        body: dua
+      - title: tiga
+        body: tiga
 draft: false
 seo_title: ''
 seo_description: ''
