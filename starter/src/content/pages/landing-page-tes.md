@@ -11,5 +11,6 @@ seo:
   noindex: false
 content_mode:
   type: classic
-    body: "tes classic editor"
+  body: |
+    tes classic editor
 ---

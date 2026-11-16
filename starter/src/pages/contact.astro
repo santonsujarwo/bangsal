@@ -1,24 +1,15 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageSections from '../components/PageSections.astro';
-import { getEntry, render } from 'astro:content';
-
+import { getEntry } from 'astro:content';
+import { marked } from 'marked';
 const entry = await getEntry('pages', 'contact');
 if (!entry) return Astro.redirect('/404/');
-const { Content } = await render(entry);
 const seo = entry.data.seo;
+const editor = entry.data.content_mode;
+const mode = typeof editor === 'string' ? editor : (editor?.type ?? 'block_builder');
+const sections = editor?.sections ?? entry.data.sections ?? [];
 ---
-<BaseLayout
-  title={seo?.title ?? entry.data.seo_title ?? entry.data.title}
-  description={seo?.description ?? entry.data.seo_description ?? entry.data.description ?? 'Contact our team.'}
-  canonicalUrl={seo?.canonical_url ?? entry.data.canonical_url}
-  ogImage={seo?.og_image ?? entry.data.og_image}
-  noindex={seo?.noindex ?? entry.data.noindex}
-  template={entry.data.template}
->
-  <main>
-    {entry.data.content_mode === 'classic'
-      ? <article class="page-body"><Content /></article>
-      : <PageSections sections={entry.data.sections} />}
-  </main>
+<BaseLayout title={seo?.title ?? entry.data.seo_title ?? entry.data.title} description={seo?.description ?? entry.data.seo_description ?? entry.data.description ?? 'Contact our team.'} canonicalUrl={seo?.canonical_url ?? entry.data.canonical_url} ogImage={seo?.og_image ?? entry.data.og_image} noindex={seo?.noindex ?? entry.data.noindex} template={entry.data.template}>
+<main>{mode === 'classic' ? <article class="page-body" set:html={marked.parse(editor?.body ?? '')} /> : <PageSections sections={sections} />}</main>
 </BaseLayout>
