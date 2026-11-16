@@ -1,0 +1,48 @@
+name: Source quality
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'starter/**'
+      - '.editorconfig'
+      - 'docs/CODE_STANDARDS.md'
+      - '.github/workflows/source-quality.yml'
+  push:
+    branches: [chore/source-code-standardization]
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Astro checks and production QA
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: starter
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.22.1'
+          cache: npm
+          cache-dependency-path: starter/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check QA script syntax
+        run: node --check scripts/qa-build.mjs
+
+      - name: Run Astro type and content checks
+        run: npm run check
+
+      - name: Build production site
+        run: npm run build
+
+      - name: Verify generated output
+        run: npm run qa:build
