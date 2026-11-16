@@ -16,7 +16,20 @@ interface Section {
 }
 interface Props { sections?: Section[] }
 const { sections = [] } = Astro.props;
-const isSafeHref = (url?: string) => !!url && ((url.startsWith('/') && !url.startsWith('//')) || url.startsWith('#') || /^https?:\/\//i.test(url) || /^(mailto|tel):/i.test(url));
+const isSafeHref = (value?: string) => {
+  const href = value?.trim();
+
+  if (!href || /[\u0000-\u001F\u007F]/.test(href)) return false;
+  if (href.startsWith('#')) return true;
+  if (href.startsWith('/') && !href.startsWith('//') && !href.startsWith('/\\')) return true;
+
+  try {
+    const protocol = new URL(href).protocol;
+    return ['http:', 'https:', 'mailto:', 'tel:'].includes(protocol);
+  } catch {
+    return false;
+  }
+};
 ---
 {sections.map((section, index) => (
   <section class:list={['content-section', `section-${section.type}`, section.type === 'hero' && section.image ? 'section-has-image' : '']} aria-labelledby={section.heading ? `section-heading-${index}` : undefined}>
@@ -26,7 +39,7 @@ const isSafeHref = (url?: string) => !!url && ((url.startsWith('/') && !url.star
           {section.eyebrow && <p class="eyebrow">{section.eyebrow}</p>}
           {section.heading && <h1 id={`section-heading-${index}`}>{section.heading}</h1>}
           {section.body && <p>{section.body}</p>}
-          {section.button_label && isSafeHref(section.button_url) && <a class="button" href={section.button_url}>{section.button_label} <span aria-hidden="true">↗</span></a>}
+          {section.button_label && isSafeHref(section.button_url) && <a class="button" href={section.button_url?.trim()}>{section.button_label} <span aria-hidden="true">↗</span></a>}
         </div>
         {section.image && (
           <figure class="hero-media">
@@ -49,7 +62,7 @@ const isSafeHref = (url?: string) => !!url && ((url.startsWith('/') && !url.star
           {section.eyebrow && <p class="eyebrow">{section.eyebrow}</p>}
           {section.heading && <h2 id={`section-heading-${index}`}>{section.heading}</h2>}
           {section.body && <p>{section.body}</p>}
-          {section.button_label && isSafeHref(section.button_url) && <a class="button" href={section.button_url}>{section.button_label} <span aria-hidden="true">↗</span></a>}
+          {section.button_label && isSafeHref(section.button_url) && <a class="button" href={section.button_url?.trim()}>{section.button_label} <span aria-hidden="true">↗</span></a>}
         </div>
       </div>
     )}
@@ -72,7 +85,7 @@ const isSafeHref = (url?: string) => !!url && ((url.startsWith('/') && !url.star
           {section.heading && <h2 id={`section-heading-${index}`}>{section.heading}</h2>}
           {section.body && <p>{section.body}</p>}
         </div>
-        {section.button_label && isSafeHref(section.button_url) && <a class="button" href={section.button_url}>{section.button_label} <span aria-hidden="true">↗</span></a>}
+        {section.button_label && isSafeHref(section.button_url) && <a class="button" href={section.button_url?.trim()}>{section.button_label} <span aria-hidden="true">↗</span></a>}
       </div>
     )}
     {section.type === 'faq' && (

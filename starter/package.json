@@ -11,7 +11,8 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "qa:build": "node scripts/qa-build.mjs"
+    "qa:build": "node scripts/qa-build.mjs",
+    "qa": "npm run build && npm run qa:build"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
