@@ -1,12 +1,9 @@
-/* Custom Sveltia CMS previews.
- * Templates render current editor values as site-like previews.
- * The deployed Astro page remains the source of truth for responsive QA.
- */
+/* Sveltia custom previews. Keep field visibility and section content aligned with Astro renderers. */
 const PreviewShell = (content, siteName = 'Company Name', navLabels = ['About', 'Services', 'Blog', 'Contact']) =>
   h('div', { className: 'preview-site' },
     h('header', { className: 'preview-header' },
       h('strong', {}, siteName),
-      h('nav', {}, navLabels.map((label) => h('span', {}, label)))
+      h('nav', {}, navLabels.map((label, index) => h('span', { key: index }, label)))
     ),
     h('main', { className: 'preview-main' }, content),
     h('footer', { className: 'preview-footer' }, `${siteName} · Site preview`)
@@ -28,25 +25,31 @@ const renderSection = (section, index, getAsset) => {
   const items = Array.isArray(section.items) ? section.items : [];
 
   if (section.type === 'image_text' || (section.type === 'hero' && image)) {
-    return h('section', { className: `preview-section ${section.type === 'hero' ? 'preview-hero-layout' : 'preview-image-text'}`, key: index },
-      h('div', {}, eyebrow, heading, body, button), image);
+    return h('section', {
+      className: [
+        'preview-section',
+        section.type === 'hero' ? 'preview-hero-layout' : 'preview-image-text',
+        section.type === 'image_text' && !image ? 'preview-image-text-no-image' : ''
+      ].join(' '),
+      key: index
+    }, h('div', {}, eyebrow, heading, body, button), image);
   }
   if (section.type === 'feature_grid') {
-    return h('section', { className: 'preview-section', key: index }, heading, body,
+    return h('section', { className: 'preview-section', key: index }, eyebrow, heading, body,
       h('div', { className: 'preview-feature-grid' }, items.map((item, itemIndex) =>
         h('article', { className: 'preview-feature-card', key: itemIndex }, h('h3', {}, item.title), item.body ? h('p', {}, item.body) : null)
       ))
     );
   }
   if (section.type === 'faq') {
-    return h('section', { className: 'preview-section', key: index }, heading, body,
+    return h('section', { className: 'preview-section', key: index }, eyebrow, heading, body,
       h('div', { className: 'preview-faq-list' }, items.map((item, itemIndex) =>
         h('details', { key: itemIndex }, h('summary', {}, item.title), item.body ? h('p', {}, item.body) : null)
       ))
     );
   }
   if (section.type === 'cta') {
-    return h('section', { className: 'preview-section preview-cta', key: index }, heading, body, button);
+    return h('section', { className: 'preview-section preview-cta', key: index }, eyebrow, heading, body, button);
   }
   if (section.type === 'hero') {
     return h('section', { className: 'preview-section preview-hero-layout', key: index },
@@ -63,14 +66,12 @@ const PagePreview = createClass({
     const mode = entry.getIn(['data', 'content_mode']) || 'blocks';
     const sections = entry.getIn(['data', 'sections']);
     const sectionData = sections && sections.toJS ? sections.toJS() : [];
-    const content = [
-      ...(sectionData.length === 0 && mode === 'blocks'
-        ? [h('div', { className: 'preview-page-heading', key: 'heading' }, h('h1', {}, title), description ? h('p', {}, description) : null)]
-        : []),
-      ...(mode === 'blocks'
+    const content = mode === 'blocks'
+      ? (sectionData.length
         ? sectionData.map((section, index) => renderSection(section, index, getAsset))
-        : [h('article', { className: 'preview-body', key: 'body' }, widgetFor('body'))])
-    ];
+        : [h('section', { className: 'preview-section preview-page-heading', key: 'heading' },
+            h('h1', {}, title), description ? h('p', {}, description) : null)])
+      : [h('article', { className: 'preview-body', key: 'body' }, widgetFor('body'))];
     return PreviewShell(content);
   }
 });
