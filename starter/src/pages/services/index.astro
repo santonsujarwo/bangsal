@@ -1,13 +1,19 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import site from '../../data/site.json';
 
 const services = await getCollection('services', ({ data }) => !data.draft);
 const sortedServices = services.sort((a, b) => a.data.sort_order - b.data.sort_order);
+const pageTitle = site.services_title || 'Services';
+const pageDescription = site.services_description || 'Explore our services.';
 ---
-<BaseLayout title="Services" description="Explore our services.">
+<BaseLayout title={pageTitle} description={pageDescription}>
   <main>
-    <h1>Services</h1>
+    <header class="listing-header">
+      <h1>{pageTitle}</h1>
+      {pageDescription && <p>{pageDescription}</p>}
+    </header>
     <div class="content-card-grid">
       {sortedServices.map((service) => (
         <article class="content-card">
