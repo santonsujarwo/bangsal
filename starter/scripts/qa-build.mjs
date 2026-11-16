@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 
 const dist = new URL('../dist/', import.meta.url);
 const source = new URL('../src/', import.meta.url);
@@ -28,7 +28,11 @@ assert.ok(portfolioHtml.includes('site-nav-mobile'), 'Accessible mobile navigati
 assert.ok(portfolioHtml.includes('aria-current="page"'), 'Current navigation item must be identified.');
 assert.ok(portfolioHtml.includes('site-footer-grid'), 'Structured footer columns must render.');
 assert.ok(portfolioHtml.includes('site-footer-links'), 'Footer navigation must render.');
-assert.ok(portfolioHtml.includes('prefers-reduced-motion'), 'Reduced-motion styles must be included in generated CSS.');
+const assetDir = path('assets');
+const cssFiles = readdirSync(assetDir).filter((name) => name.endsWith('.css'));
+assert.ok(cssFiles.length > 0, 'Compiled CSS assets must be generated.');
+const compiledCss = cssFiles.map((name) => readFileSync(new URL(name, assetDir), 'utf8')).join('\\n');
+assert.ok(compiledCss.includes('prefers-reduced-motion'), 'Reduced-motion styles must be included in generated CSS.');
 
 const footerStart = portfolioHtml.indexOf('<footer');
 const footerEnd = portfolioHtml.indexOf('</footer>');
