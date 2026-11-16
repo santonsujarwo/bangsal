@@ -8,7 +8,7 @@ featured: true
 draft: false
 seo_title: Commercial Construction | BinaKarya Demo
 seo_description: Learn about the sample commercial construction service, including project coordination, building works, and fit-out planning.
-canonical_url: /services/commercial-construction/
+canonical_url: ''
 og_image: https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=85
 noindex: false
 ---
