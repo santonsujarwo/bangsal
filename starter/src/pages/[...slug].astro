@@ -12,6 +12,7 @@ export async function getStaticPaths() {
 const { page } = Astro.props;
 const { Content } = await render(page);
 const seo = page.data.seo;
+const sections = page.data.sections ?? [];
 ---
 <BaseLayout
   title={seo?.title ?? page.data.seo_title ?? page.data.title}
@@ -24,6 +25,8 @@ const seo = page.data.seo;
   <main>
     {page.data.content_mode === 'classic'
       ? <article class="page-body"><Content /></article>
-      : <PageSections sections={page.data.sections} />}
+      : sections.length > 0
+        ? <PageSections sections={sections} />
+        : <section class="content-section"><div class="section-inner"><h1>{page.data.title}</h1>{page.data.description && <p>{page.data.description}</p>}</div></section>}
   </main>
 </BaseLayout>
