@@ -8,7 +8,7 @@ featured: true
 draft: false
 seo_title: Residential Construction | BinaKarya Demo
 seo_description: Explore the sample residential construction service, from project brief and planning to build coordination and handover.
-canonical_url: /services/residential-construction/
+canonical_url: ''
 og_image: https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=85
 noindex: false
 ---
