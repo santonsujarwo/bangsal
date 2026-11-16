@@ -28,10 +28,9 @@ assert.ok(portfolioHtml.includes('site-nav-mobile'), 'Accessible mobile navigati
 assert.ok(portfolioHtml.includes('aria-current="page"'), 'Current navigation item must be identified.');
 assert.ok(portfolioHtml.includes('site-footer-grid'), 'Structured footer columns must render.');
 assert.ok(portfolioHtml.includes('site-footer-links'), 'Footer navigation must render.');
-const assetDir = path('_astro');
-const cssFiles = readdirSync(assetDir).filter((name) => name.endsWith('.css'));
+const cssFiles = readdirSync(dist, { recursive: true }).filter((name) => typeof name === 'string' && name.endsWith('.css'));
 assert.ok(cssFiles.length > 0, 'Compiled CSS assets must be generated.');
-const compiledCss = cssFiles.map((name) => readFileSync(new URL(name, assetDir), 'utf8')).join('\\n');
+const compiledCss = cssFiles.map((name) => readFileSync(new URL(name, dist), 'utf8')).join('\\n');
 assert.ok(compiledCss.includes('prefers-reduced-motion'), 'Reduced-motion styles must be included in generated CSS.');
 
 const footerStart = portfolioHtml.indexOf('<footer');
