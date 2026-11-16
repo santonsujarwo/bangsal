@@ -6,9 +6,9 @@ type SocialLink = { label: string; url: string };
 type NavigationItem = { label: string; url: string; external?: boolean };
 const socialLinks = (site.social_links ?? []) as SocialLink[];
 const navItems = navigation.items as NavigationItem[];
-const isSafeHref = (url: string) => url.startsWith('/') || url.startsWith('#') || /^https?:\/\//i.test(url) || /^(mailto|tel):/i.test(url);
+const isSafeHref = (url: string) => (url.startsWith('/') && !url.startsWith('//')) || url.startsWith('#') || /^https?:\/\//i.test(url) || /^(mailto|tel):/i.test(url);
 const safeNavItems = navItems.filter((item) => isSafeHref(item.url));
-const safeSocialLinks = socialLinks.filter((item) => item.label && /^https?:\/\//i.test(item.url));
+const safeSocialLinks = socialLinks.filter((item) => item.label && item.url && (/^https?:\/\//i.test(item.url) || /^[\w.-]+\.[a-z]{2,}(\/|$)/i.test(item.url)));
 const normalizeUrl = (value: string) => /^https?:\/\//i.test(value) ? value : `https://${value.replace(/^\/+/, '')}`;
 const footerNote = (site.footer_note || '').replace('{year}', String(new Date().getFullYear())).replace('Company Name', site.site_name);
 ---
