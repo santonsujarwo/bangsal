@@ -4,7 +4,7 @@ import site from '../../data/site.json';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
-  const services = await getCollection('services');
+  const services = await getCollection('services', ({ data }) => !data.draft);
   return services.map((service) => ({
     params: { slug: service.id },
     props: { service },

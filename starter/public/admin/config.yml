@@ -74,17 +74,18 @@ collections:
           - { label: 'Landing — no shared header or footer', value: landing }
         default: default
         hint: 'Default is for standard website pages. Landing is for focused campaign pages.'
+      # Sveltia CMS tidak mendukung opsi `condition` (field kondisional), jadi pilihan editor
+      # memakai Object dengan `types`: editor memilih SATU tipe, dan hanya field tipe itu yang tampil.
+      # Data tersimpan sebagai content_mode: { type, sections | body } sesuai skema Astro.
       - label: Content Editor
         name: content_mode
         widget: object
-        required: true
-        default:
-          type: block_builder
-          sections: []
+        typeKey: type
         types:
-          - name: block_builder
-            label: Block Builder
+          - label: Block Builder
+            name: block_builder
             widget: object
+            summary: 'Block Builder'
             fields:
               - label: Sections
                 name: sections
@@ -109,11 +110,13 @@ collections:
                     fields:
                       - { label: Item Title, name: title, widget: string }
                       - { label: Item Description, name: body, widget: text, required: false }
-          - name: classic
-            label: Classic Content Editor
+          - label: Classic Content Editor
+            name: classic
             widget: object
+            summary: 'Classic Content Editor'
             fields:
               - { label: Content, name: body, widget: markdown, required: false }
+      - { label: Draft, name: draft, widget: boolean, default: false, hint: 'Jika aktif, konten tidak dipublikasikan di situs.' }
       - label: SEO Settings
         name: seo
         widget: object
@@ -143,6 +146,7 @@ collections:
       - { label: Featured Image Alt, name: featured_image_alt, widget: string, required: false }
       - { label: Sort Order, name: sort_order, widget: number, default: 0, value_type: int }
       - { label: Featured, name: featured, widget: boolean, default: false }
+      - { label: Draft, name: draft, widget: boolean, default: false, hint: 'Jika aktif, konten tidak dipublikasikan di situs.' }
       - label: SEO Settings
         name: seo
         widget: object
@@ -176,6 +180,7 @@ collections:
       - { label: Featured Image Alt, name: featured_image_alt, widget: string, required: false }
       - { label: Category, name: category, widget: string, required: false }
       - { label: Tags, name: tags, widget: list, required: false }
+      - { label: Draft, name: draft, widget: boolean, default: false, hint: 'Jika aktif, konten tidak dipublikasikan di situs.' }
       - label: SEO Settings
         name: seo
         widget: object

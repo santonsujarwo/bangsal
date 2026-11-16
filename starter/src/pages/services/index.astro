@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import site from '../../data/site.json';
 
-const services = await getCollection('services');
+const services = await getCollection('services', ({ data }) => !data.draft);
 const sortedServices = services.sort((a, b) => Number(b.data.featured) - Number(a.data.featured) || a.data.sort_order - b.data.sort_order);
 const pageTitle = site.services_title || 'Services';
 const pageDescription = site.services_description || 'Explore our services.';

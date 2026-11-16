@@ -19,19 +19,22 @@ const pageSection = z.object({
   items: z.array(sectionItem).default([]),
 });
 
+// Sveltia menyimpan field kosong sebagai '' — ubah jadi undefined agar `??` di halaman bekerja.
+const optStr = z.string().optional().transform((v) => v?.trim() || undefined);
+
 const seoSettings = z.object({
-  title: z.string().optional(),
-  description: z.string().optional(),
-  canonical_url: z.string().optional(),
-  og_image: z.string().optional(),
+  title: optStr,
+  description: optStr,
+  canonical_url: optStr,
+  og_image: optStr,
   noindex: z.boolean().default(false),
 }).optional();
 
 const legacySeoFields = {
-  seo_title: z.string().optional(),
-  seo_description: z.string().optional(),
-  canonical_url: z.string().optional(),
-  og_image: z.string().optional(),
+  seo_title: optStr,
+  seo_description: optStr,
+  canonical_url: optStr,
+  og_image: optStr,
   noindex: z.boolean().default(false),
 };
 
@@ -63,20 +66,38 @@ const optionalCmsDate = z.preprocess((value) => {
   return value;
 }, z.date().optional());
 
+const contentModeObject = z.object({
+  type: z.enum(['block_builder', 'blocks', 'classic']).default('block_builder'),
+  sections: z.array(pageSection).default([]),
+  body: z.string().optional(),
+});
+
 const pages = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/pages' }),
   schema: z.object({
     title: z.string(),
     description: z.string().optional(),
     template: z.enum(['default', 'landing']).default('default'),
-    content_mode: z.object({
-      type: z.enum(['block_builder', 'classic']).default('block_builder'),
-      sections: z.array(pageSection).default([]),
-      body: z.string().optional(),
-    }).default({ type: 'block_builder', sections: [] }),
+    draft: z.boolean().default(false),
+    // Format CMS (config.yml): string 'blocks' | 'classic' + sections/body di level atas.
+    // Format lama: objek { type, sections, body }. Keduanya dinormalisasi ke objek di bawah.
+    content_mode: z.union([z.enum(['block_builder', 'blocks', 'classic']), contentModeObject]).default('block_builder'),
     sections: z.array(pageSection).optional(),
+    body: z.string().optional(),
     seo: seoSettings,
     ...legacySeoFields,
+  }).transform((data) => {
+    const cm = data.content_mode;
+    const isObj = typeof cm === 'object';
+    const rawType = isObj ? cm.type : cm;
+    return {
+      ...data,
+      content_mode: {
+        type: (rawType === 'classic' ? 'classic' : 'block_builder') as 'classic' | 'block_builder',
+        sections: isObj ? cm.sections : (data.sections ?? []),
+        body: isObj ? cm.body : data.body,
+      },
+    };
   }),
 });
 
@@ -85,6 +106,7 @@ const services = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
+    draft: z.boolean().default(false),
     featured_image: z.string().optional(),
     featured_image_alt: z.string().optional(),
     sort_order: z.number().default(0),
@@ -99,6 +121,7 @@ const posts = defineCollection({
   schema: z.object({
     title: z.string(),
     excerpt: z.string().optional(),
+    draft: z.boolean().default(false),
     author: z.string().optional(),
     published_at: optionalCmsDate,
     updated_at: optionalCmsDate,
