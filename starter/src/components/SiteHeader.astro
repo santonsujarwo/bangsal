@@ -6,7 +6,7 @@ type NavigationItem = { label: string; url: string; external?: boolean };
 const navItems = navigation.items as NavigationItem[];
 const contactItem = navItems.find((item) => /contact/i.test(item.label) || /\/contact\/?$/i.test(item.url));
 const contactHref = contactItem?.url ?? '/contact/';
-const isSafeHref = (url: string) => url.startsWith('/') || url.startsWith('#') || /^https?:\/\//i.test(url) || /^(mailto|tel):/i.test(url);
+const isSafeHref = (url: string) => (url.startsWith('/') && !url.startsWith('//')) || url.startsWith('#') || /^https?:\/\//i.test(url) || /^(mailto|tel):/i.test(url);
 const safeNavItems = navItems.filter((item) => isSafeHref(item.url));
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 const isCurrent = (url: string) => {
