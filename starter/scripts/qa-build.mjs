@@ -37,16 +37,22 @@ assert.ok(
 
 for (const file of htmlFiles) {
   const html = readFileSync(file, 'utf8');
-  const page = relative(distDirectory, file);
+  const page = relative(distDirectory, file).split('\\').join('/');
 
   assert.match(html, /<!doctype html>/i, 'Missing doctype in ' + page + '.');
   assert.match(html, /<html\b[^>]*\blang=/i, 'Missing document language in ' + page + '.');
   assert.match(html, /<title>[^<]+<\/title>/i, 'Missing page title in ' + page + '.');
-  assert.match(
-    html,
-    /<link\b[^>]*\brel=["']canonical["']/i,
-    'Missing canonical URL in ' + page + '.',
-  );
+
+  // The CMS admin shell is intentionally noindex and does not need a canonical URL.
+  if (page.startsWith('admin/')) {
+    assert.match(html, /<meta\b[^>]*name=["']robots["'][^>]*noindex/i, 'CMS admin must remain noindex.');
+  } else {
+    assert.match(
+      html,
+      /<link\b[^>]*\brel=["']canonical["']/i,
+      'Missing canonical URL in ' + page + '.',
+    );
+  }
 }
 
 console.log(
