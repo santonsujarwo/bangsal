@@ -60,12 +60,16 @@ const PagePreview = createClass({
     const { entry, getAsset, widgetFor } = this.props;
     const title = entry.getIn(['data', 'title']) || 'Untitled page';
     const description = entry.getIn(['data', 'description']);
+    const mode = entry.getIn(['data', 'content_mode']) || 'blocks';
     const sections = entry.getIn(['data', 'sections']);
     const sectionData = sections && sections.toJS ? sections.toJS() : [];
     const content = [
-      ...(sectionData.length === 0 ? [h('div', { className: 'preview-page-heading', key: 'heading' }, h('h1', {}, title), description ? h('p', {}, description) : null)] : []),
-      ...sectionData.map((section, index) => renderSection(section, index, getAsset)),
-      h('article', { className: 'preview-body', key: 'body' }, widgetFor('body'))
+      ...(sectionData.length === 0 && mode === 'blocks'
+        ? [h('div', { className: 'preview-page-heading', key: 'heading' }, h('h1', {}, title), description ? h('p', {}, description) : null)]
+        : []),
+      ...(mode === 'blocks'
+        ? sectionData.map((section, index) => renderSection(section, index, getAsset))
+        : [h('article', { className: 'preview-body', key: 'body' }, widgetFor('body'))])
     ];
     return PreviewShell(content);
   }
