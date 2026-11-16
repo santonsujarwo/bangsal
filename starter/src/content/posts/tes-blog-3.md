@@ -12,7 +12,7 @@ tags:
   - project brief
   - budgeting
 draft: false
-seo_title: Construction Project Checklist: What to Prepare First
+seo_title: 'Construction Project Checklist: What to Prepare First'
 seo_description: A practical guide to preparing a construction brief, site details, budget range, schedule, and key decisions before work begins.
 canonical_url: ''
 og_image: https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=85
