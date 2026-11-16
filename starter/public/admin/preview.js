@@ -60,21 +60,29 @@ const PagePreview = createClass({
     const { entry, getAsset, widgetFor } = this.props;
     const title = entry.getIn(['data', 'title']) || 'Untitled page';
     const description = entry.getIn(['data', 'description']);
-    const mode = entry.getIn(['data', 'content_mode']) || 'blocks';
-    const sections = entry.getIn(['data', 'sections']);
-    const sectionData = sections && sections.toJS ? sections.toJS() : [];
-    const content = [
-      ...(sectionData.length === 0 && mode === 'blocks'
-        ? [h('div', { className: 'preview-page-heading', key: 'heading' }, h('h1', {}, title), description ? h('p', {}, description) : null)]
-        : []),
-      ...(mode === 'blocks'
-        ? sectionData.map((section, index) => renderSection(section, index, getAsset))
-        : [h('article', { className: 'preview-body', key: 'body' }, widgetFor('body'))])
-    ];
-    return PreviewShell(content);
+    const editor = entry.getIn(['data', 'content_mode']);
+    const isObjectEditor = editor && typeof editor.get === 'function';
+    const mode = isObjectEditor ? (editor.get('type') || 'block_builder') : (editor || 'block_builder');
+
+    let content;
+    if (mode === 'classic') {
+      const classicBody = isObjectEditor ? editor.get('body') : entry.getIn(['data', 'body']);
+      content = h('article', { className: 'preview-body preview-classic-content' },
+        classicBody ? widgetFor('content_mode.classic.body') : h('p', { className: 'preview-placeholder' }, 'Add your page content in the Classic Content Editor.')
+      );
+    } else {
+      const sections = isObjectEditor ? editor.get('sections') : entry.getIn(['data', 'sections']);
+      const sectionData = sections && sections.toJS ? sections.toJS() : [];
+      content = [
+        ...(sectionData.length === 0
+          ? [h('div', { className: 'preview-page-heading', key: 'heading' }, h('h1', {}, title), description ? h('p', {}, description) : null)]
+          : []),
+        ...sectionData.map((section, index) => renderSection(section, index, getAsset))
+      ];
+    }
+    return PreviewShell(Array.isArray(content) ? content : [content]);
   }
 });
-
 const ServicePreview = createClass({
   render: function () {
     const { entry, getAsset, widgetFor } = this.props;
