@@ -20,7 +20,7 @@ sections:
         body: Your ideal start date, target completion, and an indicative budget range.
   - type: cta
     heading: Demo contact information
-    body: Email: hello@example.com · Phone: +62 000 0000 0000 · Location: Surabaya, East Java (demo only).
+    body: "Email: hello@example.com · Phone: +62 000 0000 0000 · Location: Surabaya, East Java (demo only)."
     button_label: Email the Demo Team
     button_url: mailto:hello@example.com
 draft: false
